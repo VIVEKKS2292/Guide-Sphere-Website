@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Recommender</title>
+    <style>
+        .course {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        .course img {
+            width: 150px; /* Adjust image width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+    <h1>Course Recommender</h1>
+
+    <form method="post" action="/">
+        <label for="course_title">Enter Course Title:</label>
+        <input type="text" id="course_title" name="course_title" required>
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    {% if input_title %}
+        <h2>Recommendations for "{{ input_title }}"</h2>
+        {% for course in recommendations %}
+            <div class="course">
+                <a href="{{ url_for('details', title=course['name']) }}">
+                    <img src="{{ course['course_img'] }}" alt="{{ course['name'] }}">
+                </a>
+                <p>{{ course['name'] }}</p>
+                <p>Duration: {{ course['course_duration'] }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

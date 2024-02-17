@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Courses</title>
+    <style>
+        .course {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        .course img {
+            width: 150px; /* Adjust image width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Courses</h1>
+    <form method="post">
+        <label for="keyword">Enter Keyword to Search:</label>
+        <input type="text" id="keyword" name="keyword" required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if keyword %}
+        <h2>Search Results for "{{ keyword }}"</h2>
+        <ul>
+            {% for course in searches %}
+                <div class="course">
+                    <a href="{{ url_for('details', title=course['name']) }}">
+                        <img src="{{ course['course_img'] }}" alt="{{ course['name'] }}">
+                    </a>
+                    <p>{{ course['name'] }}</p>
+                    <p>Duration: {{ course['course_duration'] }}</p>
+                <div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
+ 

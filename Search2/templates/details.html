@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        h1, h2, p {
+            margin: 10px 0;
+        }
+        img {
+            width: 100%; /* Make the image fill the container */
+            max-width: 600px; /* Set maximum width for the image */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 20px;
+        }
+        .course-details {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .button-container {
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .course-outcomes ul {
+    padding: 0; /* Remove any padding */
+    margin: 0; /* Remove any margin */
+    list-style-type: none; /* Remove default bullet points */
+}
+
+.course-outcomes li {
+    margin-bottom: 10px; /* Adjust the margin-bottom value as needed */
+}
+    </style>
+</head>
+<body>
+    <div class="course-details">
+        <h1>Course Details</h1>
+        <img src="{{ course_data['course_img'] }}" alt="{{ course_data['name'] }}">
+        <h2>{{ course_data['course_title'] }}</h2>
+        <p>{{ course_data['course_short_desc'] }}</p>
+        <p><b>By:</b> {{ course_data['course_instrutor'] }}</p>
+        <p><b>Duration:</b> {{ course_data['course_duration'] }}</p>
+        <p><b>Ratings:</b> {{ course_data['course_rating'] }} out of 5</p>
+        <p><b>Language:</b> {{ course_data['course_language'] }}</p>
+        <p><b>Last Updated:</b> {{ course_data['course_date'] }}</p>
+        <p><b>Current Price:</b> {{ course_data['course_price'] }}</p>
+        <p><b>Original Price:</b> {{ course_data['course_price_original'] }}</p>
+        <!-- Use safe filter to render HTML content -->
+        <div class="course-about" style="overflow-wrap: break-word;">
+            <h2>Course About</h2>
+            {{ course_data['course_about_html'] | safe }}
+        </div>
+         <!-- Use safe filter to render HTML content -->
+         <div class="course-outcomes" style="overflow-wrap: break-word;">
+            <h2>Course Outcomes</h2>
+            {{ course_data['course_outcome_html'] | safe }}
+        </div>
+        <div class="button-container">
+            <a href="{{ course_data['course_url'] }}" target="_blank">
+                <button>Access Course</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

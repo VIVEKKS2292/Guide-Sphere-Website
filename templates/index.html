@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Course Recommender</title>
+</head>
+<body>
+    <h1>Course Recommender</h1>
+
+    <form method="post" action="/">
+        <label for="course_title">Enter Course Title:</label>
+        <input type="text" id="course_title" name="course_title" required>
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    {% if input_title %}
+        <h2>Recommendations for "{{ input_title }}"</h2>
+        <ul>
+            {% for course in recommendations %}
+                <li>{{ course }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
