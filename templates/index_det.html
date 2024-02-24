@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Courses</title>
     <style>
+        .course-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Center the items horizontally */
+        }
+
         .course {
-            display: inline-block;
             margin: 10px;
             text-align: center;
+            flex: 0 0 calc(33.33% - 20px); /* Adjust the width of each course item */
+            max-width: calc(33.33% - 20px); /* Adjust the maximum width of each course item */
         }
         .course img {
             width: 150px; /* Adjust image width as needed */
@@ -26,7 +33,7 @@
 
     {% if keyword %}
         <h2>Search Results for "{{ keyword }}"</h2>
-        <ul>
+        <div class="course-container">
             {% for course in searches %}
                 <div class="course">
                     <a href="{{ url_for('details', title=course['name']) }}">
@@ -34,9 +41,9 @@
                     </a>
                     <p>{{ course['name'] }}</p>
                     <p>Duration: {{ course['course_duration'] }}</p>
-                <div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
 </body>
 </html>

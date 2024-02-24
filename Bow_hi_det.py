@@ -58,7 +58,7 @@ def recommend(keyword):
     recommended_courses = [new_courses.iloc[idx]['course_title'] for idx in top_indices]
     return recommended_courses
 
-@app.route('/bow', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         input_title = request.form['course_title']
@@ -84,7 +84,7 @@ def index():
 @app.route('/details/<title>', methods=['GET'])
 def details(title):
     course_data = courses[courses['course_title'] == title].iloc[0]
-    return render_template('details.html', course_data=course_data)
+    return render_template('base_details.html', course_data=course_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
