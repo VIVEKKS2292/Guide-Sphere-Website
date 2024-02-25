@@ -80,6 +80,7 @@
             <img src="{{ course_data['course_img'] }}" alt="{{ course_data['name'] }}">
             <h2>{{ course_data['course_title'] }}</h2>
             <p>{{ course_data['course_short_desc'] }}</p>
+            <!-- <p><b>Course ID:</b> {{ course_data['course_id'] }}</p> -->
             <p><b>By:</b> {{ course_data['course_instrutor'] }}</p>
             <p><b>Duration:</b> {{ course_data['course_duration'] }}</p>
             <p><b>Ratings:</b> {{ course_data['course_rating'] }} out of 5</p>
@@ -92,11 +93,19 @@
                 <h2>Course About</h2>
                 {{ course_data['course_about_html'] | safe }}
             </div>
-            <!-- Use safe filter to render HTML content -->
+            <!-- Course Outcomes -->
             <div class="course-outcomes" style="overflow-wrap: break-word;">
                 <h2>Course Outcomes</h2>
-                {{ course_data['course_outcome_html'] | safe }}
+                <ul style="list-style-type: none; padding-left: 0;">
+                    {% for outcome in course_data['course_outcome_text'].split('\n') %}
+                        {% if not loop.first and outcome.strip() != "Show more" %}
+                            <li style="margin-bottom: 5px;">&bull; {{ outcome }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
+            
+            <!-- button -->
             <div class="button-container">
                 <a href="{{ course_data['course_url'] }}" target="_blank">
                     <button>Access Course</button>
