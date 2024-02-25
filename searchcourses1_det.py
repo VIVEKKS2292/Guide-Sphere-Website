@@ -64,7 +64,11 @@ def search_books(books, keyword):
     results = result_books['book_title'].tolist()
     return results
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+def welcome():
+    return render_template('welcome.html')
+
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         keyword = request.form['keyword']
@@ -104,6 +108,7 @@ def index():
             return render_template('index_det.html', error_message=error_message)
         
     return render_template('index_det.html')
+
 
 @app.route('/details/<title>', methods=['GET'])
 def details(title):

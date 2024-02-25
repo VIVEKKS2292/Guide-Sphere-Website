@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <style>
+        body {
+            text-align: center; /* Center align the content */
+        }
+
+        h1 {
+            margin-top: 50px; /* Add some top margin to the heading */
+        }
+
+        button {
+            margin-top: 20px; /* Add some top margin to the button */
+        }
+    </style>
+    <script>
+        function navigateToIndexDet() {
+            // Redirect to index.html
+            window.location.href = "{{ url_for('index') }}";
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to Your Application</h1>
+    <button onclick="navigateToIndexDet()">Run Model</button>
+</body>
+</html>
