@@ -5,6 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Courses</title>
     <style>
+        .button-container {
+            justify-content: center; /* Align items horizontally at the center */
+            display: flex;
+            max-width: 600px; /* Set a maximum width for the button container */
+            margin: 0 auto; /* Center the button container horizontally */
+        }
+
+        .button-container button {
+            margin: 0 ; /* Adjust margin between buttons as needed */
+            flex: 1; /* Each button occupies equal space */
+        }
+ 
+        .button-container button.active {
+            color: #fff; /* Example color for active button text */
+            background-color: #007bff; /* Example color for active button */
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around; /* Adjust as needed */
+        }
+
+        form {
+            width: 30%; /* Adjust width as needed */
+        }
+
+        form input[type="text"],
+        form button[type="submit"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
         .course-container {
             display: flex;
             flex-wrap: wrap;
@@ -22,15 +55,83 @@
             height: auto; /* Maintain aspect ratio */
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const buttons = document.querySelectorAll(".button-container button");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function() {
+            // Remove 'active' class from all buttons
+            buttons.forEach(btn => btn.classList.remove("active"));
+
+            // Add 'active' class to the clicked button
+            this.classList.add("active");
+            });
+        });
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Initial state: Show only class_course_search form
+        $(".class_course_search").show();
+        $(".class_book_search, .class_job_search").hide();
+
+        // Button click event
+        $(".button-container button").click(function() {
+            // Remove active class from all buttons
+            $(".button-container button").removeClass("active");
+
+            // Add active class to the clicked button
+            $(this).addClass("active");
+
+            // Hide all forms
+            $(".form-container form").hide();
+
+            // Show the corresponding form based on the clicked button
+            if ($(this).attr("id") === "course-button") {
+                $(".class_course_search").show();
+            } else if ($(this).attr("id") === "book-button") {
+                $(".class_book_search").show();
+            } else if ($(this).attr("id") === "jobs-button") {
+                $(".class_job_search").show();
+            }
+        });
+    });
+
+    </script>
 </head>
 <body>
-    <h1>Search Courses</h1>
-    <form method="post">
-        <label for="keyword">Enter Keyword to Search:</label>
-        <input type="text" id="keyword" name="keyword" required>
-        <button type="submit">Search</button>
-    </form>
-
+    <!-- Top 3 Switch Buttons -->
+    <div class="button-container">
+        <button id="course-button" class="active">Courses</button>
+        <button id="book-button">Books</button>
+        <button id="jobs-button">Job</button>
+    </div>
+    <!-- Input keyword -->
+    <div class="form-container">
+        <form method="post" class="class_course_search">
+            <h1>Search Courses</h1>
+            <label for="keyword">Enter Keyword to Search:</label>
+            <input type="text" id="keyword" name="keyword" placeholder="Search Courses" required>
+            <button type="submit">Search Course</button>
+        </form>
+        
+        <form method="post" class="class_book_search">
+            <h1>Search Books</h1>
+            <label for="keyword">Enter Keyword to Search:</label>
+            <input type="text" id="keyword" name="keyword" placeholder="Search Books" required>
+            <button type="submit">Search Book</button>
+        </form>
+        
+        <form method="post" class="class_job_search">
+            <h1>Search Jobs</h1>
+            <label for="keyword">Enter Keyword to Search:</label>
+            <input type="text" id="keyword" name="keyword" placeholder="Search Jobs" required>
+            <button type="submit">Search Job</button>
+        </form>
+    </div>
+    <!-- Flask Part -->
     {% if keyword %}
         <h2>Search Results for "{{ keyword }}"</h2>
         <div class="course-container">
