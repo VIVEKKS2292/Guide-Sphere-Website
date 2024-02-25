@@ -38,19 +38,20 @@
             margin-bottom: 10px;
         }
 
-        .course-container {
+        .search-results {
             display: flex;
             flex-wrap: wrap;
             justify-content: center; /* Center the items horizontally */
         }
 
-        .course {
+        .course,.book {
             margin: 10px;
             text-align: center;
             flex: 0 0 calc(33.33% - 20px); /* Adjust the width of each course item */
             max-width: calc(33.33% - 20px); /* Adjust the maximum width of each course item */
         }
-        .course img {
+
+        .course img, .book img {
             width: 150px; /* Adjust image width as needed */
             height: auto; /* Maintain aspect ratio */
         }
@@ -79,14 +80,14 @@
 
         // Button click event
         $(".button-container button").click(function() {
+            // Hide all forms
+            $(".form-container form").hide();
+
             // Remove active class from all buttons
             $(".button-container button").removeClass("active");
 
             // Add active class to the clicked button
             $(this).addClass("active");
-
-            // Hide all forms
-            $(".form-container form").hide();
 
             // Show the corresponding form based on the clicked button
             if ($(this).attr("id") === "course-button") {
@@ -98,7 +99,6 @@
             }
         });
     });
-
     </script>
 </head>
 <body>
@@ -112,16 +112,16 @@
     <div class="form-container">
         <form method="post" class="class_course_search">
             <h1>Search Courses</h1>
-            <label for="keyword">Enter Keyword to Search:</label>
-            <input type="text" id="keyword" name="keyword" placeholder="Search Courses" required>
-            <button type="submit">Search Course</button>
+            <label for="course_keyword">Enter Keyword to Search:</label>
+            <input type="text" id="course_keyword" name="keyword" placeholder="Search Courses" required>
+            <button type="submit" name="search_course">Search Course</button>
         </form>
         
         <form method="post" class="class_book_search">
             <h1>Search Books</h1>
-            <label for="keyword">Enter Keyword to Search:</label>
-            <input type="text" id="keyword" name="keyword" placeholder="Search Books" required>
-            <button type="submit">Search Book</button>
+            <label for="book_keyword">Enter Keyword to Search:</label>
+            <input type="text" id="book_keyword" name="keyword" placeholder="Search Books" required>
+            <button type="submit" name="search_book">Search Book</button>
         </form>
         
         <form method="post" class="class_job_search">
@@ -131,20 +131,30 @@
             <button type="submit">Search Job</button>
         </form>
     </div>
-    <!-- Flask Part -->
+   <!-- Flask Part -->
     {% if keyword %}
-        <h2>Search Results for "{{ keyword }}"</h2>
-        <div class="course-container">
-            {% for course in searches %}
+    <h2>Search Results for "{{ keyword }}"</h2>
+    <div class="search-results">
+        {% for item in searches %}
+            {% if item.type == 'course' %}
                 <div class="course">
-                    <a href="{{ url_for('details', title=course['name']) }}">
-                        <img src="{{ course['course_img'] }}" alt="{{ course['name'] }}">
+                    <a href="{{ url_for('details', title=item['name']) }}">
+                        <img src="{{ item['course_img'] }}" alt="{{ item['name'] }}">
                     </a>
-                    <p>{{ course['name'] }}</p>
-                    <p>Duration: {{ course['course_duration'] }}</p>
+                    <p>{{ item['name'] }}</p>
+                    <p>Duration: {{ item['course_duration'] }}</p>
                 </div>
-            {% endfor %}
-        </div>
+            {% elif item.type == 'book' %}
+                <div class="book">
+                    <a href="{{ url_for('book_details', title=item['name']) }}">
+                        <img src="{{ item['book_img'] }}" alt="{{ item['name'] }}">
+                    </a>
+                    <p>{{ item['name'] }}</p>
+                    <p>Author: {{ item['book_author'] }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
     {% endif %}
 </body>
 </html>

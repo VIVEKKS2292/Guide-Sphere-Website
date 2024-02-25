@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+
+        h1, h2, p {
+            margin: 10px 0;
+        }
+
+        img {
+            width: 100%; /* Make the image fill the container */
+            max-width: 600px; /* Set maximum width for the image */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 20px;
+        }
+
+        .book-details {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="book-details">
+        <h1>Book Details</h1>
+        <img src="{{ book_data['book_img'] }}" alt="{{ book_data['book_title'] }}">
+        <h2>{{ book_data['book_title'] }}</h2>
+        <!-- <p><b>Book ID:</b> {{ book_data['book_id'] }}</p> -->
+        <p><b>By:</b> {{ book_data['book_author'] }}</p>
+        <p><b>Description:</b> {{ book_data['book_long_desc'] }}</p>
+        <!-- button -->
+        <div class="button-container">
+            <a href="{{ book_data['book_link'] }}" target="_blank">
+                <button>Access Book</button>
+            </a>
+        </div>
+    </div>     
+</body>
+</html>

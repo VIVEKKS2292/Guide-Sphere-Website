@@ -33,11 +33,19 @@ credentials ={
 credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials, scope)
 client = gspread.authorize(credentials)
 # Open the Google Sheets document
-sheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1gut4xfyhDaO5dynh6R2IrpxDcAegNsAm8wROkKNnQ6A/edit#gid=897263558")
-worksheet = sheet.get_worksheet(0)  # Assuming the data is in the first worksheet
-# Read data into a pandas DataFrame
-data = worksheet.get_all_records()
-courses = pd.DataFrame(data)
+
+# Courses
+sheet1 = client.open_by_url("https://docs.google.com/spreadsheets/d/1gut4xfyhDaO5dynh6R2IrpxDcAegNsAm8wROkKNnQ6A/edit#gid=897263558")
+worksheet1 = sheet1.get_worksheet(0)  # Assuming the data is in the first worksheet
+# Read courses data into a pandas DataFrame
+course_data = worksheet1.get_all_records()
+courses = pd.DataFrame(course_data)
+# Books
+sheet2 = client.open_by_url("https://docs.google.com/spreadsheets/d/1qrsUN1inO_baBz_RVBu8g7cCiH0JA2496agoOEN4G5c/edit#gid=83392491")
+worksheet2 = sheet2.get_worksheet(0)  # Assuming the data is in the first worksheet
+# Read books data into a pandas DataFrame
+book_data = worksheet2.get_all_records()
+books = pd.DataFrame(book_data)
 # Data import ends here
 
 def search_courses(courses, keyword):
@@ -48,26 +56,51 @@ def search_courses(courses, keyword):
     results = result_courses['course_title'].tolist()
     return results
 
+def search_books(books, keyword):
+    # Remove null values
+    books.dropna(inplace=True)
+    books = books.reset_index()
+    result_books = books[books['book_title'].str.contains(keyword, case=False)]
+    results = result_books['book_title'].tolist()
+    return results
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         keyword = request.form['keyword']
-        results = search_courses(courses, keyword)
+        
+        if 'search_course' in request.form:
+            results = search_courses(courses, keyword)
+            search_type = 'course'
+        elif 'search_book' in request.form:
+            results = search_books(books, keyword)
+            search_type = 'book'
 
-        if results: 
+        if results:
             search_results = []
             for title in results:
-                course_data = courses[courses['course_title'] == title].iloc[0]
-                search_results.append({
-                    'name': title,
-                    'course_img': course_data['course_img'],
-                    'course_duration': course_data['course_duration'],
-                    'course_url': course_data['course_url']
-                })
+                if search_type == 'course':
+                    course_data = courses[courses['course_title'] == title].iloc[0]
+                    search_results.append({
+                        'type': 'course',  # Add a 'type' key to differentiate course and book data
+                        'name': title,
+                        'course_img': course_data['course_img'],
+                        'course_duration': course_data['course_duration'],
+                        'course_url': course_data['course_url']
+                    })
+                elif search_type == 'book':
+                    book_data = books[books['book_title'] == title].iloc[0]
+                    search_results.append({
+                        'type': 'book',  # Add a 'type' key to differentiate course and book data
+                        'name': title,
+                        'book_author': book_data['book_author'],
+                        'book_img': book_data['book_img'],
+                        'book_long_desc': book_data['book_long_desc']
+                    })
             
             return render_template('index_det.html', keyword=keyword, searches=search_results)
         else:
-            error_message = "No Searches found for the given input."
+            error_message = f"No {search_type}s found for the given input."
             return render_template('index_det.html', error_message=error_message)
         
     return render_template('index_det.html')
@@ -94,6 +127,11 @@ def details(title):
                 }) 
 
     return render_template('details.html', course_data=course_data, recommended_courses=recommended_courses)
+
+@app.route('/book_details/<title>', methods=['GET'])
+def book_details(title):
+    book_data = books[books['book_title'] == title].iloc[0]
+    return render_template('book_details.html', book_data=book_data)
 
 
 if __name__ == '__main__':
