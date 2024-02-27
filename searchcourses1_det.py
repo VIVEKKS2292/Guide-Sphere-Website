@@ -4,6 +4,8 @@ from flask import Blueprint
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
+from fuzzywuzzy import process
+from datetime import datetime
 from Bow_hi_det import recommend  # Import the recommend function from recommendations.py
 
 # Define a blueprint for searchcourses model
@@ -35,7 +37,7 @@ client = gspread.authorize(credentials)
 # Open the Google Sheets document
 
 # Courses
-sheet1 = client.open_by_url("https://docs.google.com/spreadsheets/d/1gut4xfyhDaO5dynh6R2IrpxDcAegNsAm8wROkKNnQ6A/edit#gid=897263558")
+sheet1 = client.open_by_url("https://docs.google.com/spreadsheets/d/1FelQDvbaIFUhLUNsY0SrWazFCywDdrjhj5fI1t9gMBM/edit#gid=1389387669")
 worksheet1 = sheet1.get_worksheet(0)  # Assuming the data is in the first worksheet
 # Read courses data into a pandas DataFrame
 course_data = worksheet1.get_all_records()
@@ -48,12 +50,29 @@ book_data = worksheet2.get_all_records()
 books = pd.DataFrame(book_data)
 # Data import ends here
 
-def search_courses(courses, keyword):
+def search_courses(courses, keyword,  threshold=0):
     # Remove null values
     courses.dropna(inplace=True)
     courses = courses.reset_index()
     result_courses = courses[courses['course_title'].str.contains(keyword, case=False)]
     results = result_courses['course_title'].tolist()
+
+    # Using fuzzy words
+        # Remove null values
+    # courses.dropna(inplace=True)
+    # courses = courses.reset_index()
+    
+    # # Create a list of course titles for fuzzy matching
+    # course_titles = courses['course_title'].tolist()
+    
+    # # Use fuzzy matching to find matches to the keyword
+    # matches = process.extract(keyword, course_titles)
+    
+    # # Filter matches based on threshold
+    # results = [match[0] for match in matches if match[1] >= threshold]
+    
+    # # Ensure results is always a list
+    # results = results if results else []
     return results
 
 def search_books(books, keyword):
@@ -64,9 +83,44 @@ def search_books(books, keyword):
     results = result_books['book_title'].tolist()
     return results
 
+def format_date(date):
+    # Extract year and month from the datetime object
+    year = str(date.year)
+    month = str(date.month).zfill(2)  # Zero-padding for single-digit months
+    # Format the date as 'mm/yyyy'
+    formatted_date = f"{month}/{year}"
+    return formatted_date
+
+def get_recent_courses(courses):
+    # Convert 'course_date' to datetime
+    courses['course_date'] = pd.to_datetime(courses['course_date'], format='%m/%Y') 
+    # Get current month and year
+    current_date = datetime.now() 
+    # Filter courses that are nearest or in the same month and year as the current month and year
+    recent_courses = courses[courses['course_date'].dt.strftime('%m/%Y') <= current_date.strftime('%m/%Y')].sort_values(by='course_date', ascending=False).head(10)
+    # Convert 'course_date' back to the original format
+    courses['course_date'] = courses['course_date'].apply(format_date)
+    # Get the course titles of the recent courses
+    recent_course_titles = recent_courses['course_title'].tolist()
+    return recent_course_titles
+
 @app.route('/')
 def welcome():
-    return render_template('welcome.html')
+    recent_course_titles = get_recent_courses(courses)
+    if recent_course_titles:
+        recent_courses = []
+        for title in recent_course_titles:
+            recent_course_data = courses[courses['course_title'] == title].iloc[0]
+            recent_courses.append({
+                'name': title,
+                'course_img': recent_course_data['course_img'],
+                'course_duration': recent_course_data['course_duration'],
+                'course_url': recent_course_data['course_url']
+            })
+        return render_template('welcome.html', recent_courses_list=recent_courses)
+    else:
+        error_message = "No recent courses"
+        return render_template('welcome.html', error_message=error_message)
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():

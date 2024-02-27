@@ -3,16 +3,34 @@
 <head>
     <title>Welcome</title>
     <style>
-        body {
-            text-align: center; /* Center align the content */
-        }
 
         h1 {
             margin-top: 50px; /* Add some top margin to the heading */
+            text-align: center;
         }
 
         button {
             margin-top: 20px; /* Add some top margin to the button */
+            margin-left: auto; /* Set left margin to auto */
+            display: block; /* Ensure the button behaves as a block element */
+            margin-right: auto; /* Set right margin to auto */
+        }
+
+        .latest-courses-container {
+            overflow-x: auto; /* Enable horizontal scrolling */
+            width: 90%; /* Set maximum width for the recommended courses */
+            margin: 20px auto; /* Center the container */
+        }
+
+        .latest-courses {
+            display: flex; /* Use flexbox to layout the recommended courses horizontally */
+            flex-wrap: nowrap; /* Prevent wrapping to the next line */
+        }
+
+        .lat_course {
+            flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+            margin-right: 80px; /* Add some spacing between recommended courses */
+            width: 200px; /* Set width for each recommended course */
         }
     </style>
     <script>
@@ -25,5 +43,20 @@
 <body>
     <h1>Welcome to Your Application</h1>
     <button onclick="navigateToIndexDet()">Run Model</button>
+    <!-- Latest Courses Section -->
+    <h2 style="padding-left: 5%;">Latest Courses</h2>
+    <div class="latest-courses-container">
+        <div class="latest-courses">
+            {% for lat_course in recent_courses_list %}
+                <div class="lat_course">
+                    <a href="{{ url_for('details', title=lat_course['name']) }}">
+                        <img src="{{ lat_course['course_img'] }}" alt="{{ lat_course['name'] }}">
+                    </a>    
+                        <h3>{{ lat_course['name'] }}</h3>
+                        <p>Duration: {{ lat_course['course_duration'] }}</p>    
+                </div> 
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>
