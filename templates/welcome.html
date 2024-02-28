@@ -32,6 +32,23 @@
             margin-right: 80px; /* Add some spacing between recommended courses */
             width: 200px; /* Set width for each recommended course */
         }
+
+        .recommended-courses-container {
+            overflow-x: auto; /* Enable horizontal scrolling */
+            width: 90%; /* Set maximum width for the recommended courses */
+            margin: 20px auto; /* Center the container */
+        }
+
+        .recommended-courses {
+            display: flex; /* Use flexbox to layout the recommended courses horizontally */
+            flex-wrap: nowrap; /* Prevent wrapping to the next line */
+        }
+
+        .rec_course {
+            flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+            margin-right: 80px; /* Add some spacing between recommended courses */
+            width: 200px; /* Set width for each recommended course */
+        }
     </style>
     <script>
         function navigateToIndexDet() {
@@ -54,6 +71,21 @@
                     </a>    
                         <h3>{{ lat_course['name'] }}</h3>
                         <p>Duration: {{ lat_course['course_duration'] }}</p>    
+                </div> 
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Recommended Courses Section -->
+    <h2 style="padding-left: 5%;">Recommended Courses</h2>
+    <div class="recommended-courses-container">
+        <div class="recommended-courses">
+            {% for rec_course in recommended_courses %}
+                <div class="rec_course">
+                    <a href="{{ url_for('details', title=rec_course['name']) }}">
+                        <img src="{{ rec_course['course_img'] }}" alt="{{ rec_course['name'] }}">
+                    </a>    
+                        <h3>{{ rec_course['name'] }}</h3>
+                        <p>Duration: {{ rec_course['course_duration'] }}</p>    
                 </div> 
             {% endfor %}
         </div>

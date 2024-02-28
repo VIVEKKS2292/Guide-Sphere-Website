@@ -6,6 +6,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 from fuzzywuzzy import process
 from datetime import datetime
+import json
+import random
 from Bow_hi_det import recommend  # Import the recommend function from recommendations.py
 
 # Define a blueprint for searchcourses model
@@ -91,6 +93,12 @@ def format_date(date):
     formatted_date = f"{month}/{year}"
     return formatted_date
 
+def clean_date(date_str):
+    try:
+        return pd.to_datetime(date_str, format='%m/%Y')
+    except ValueError:
+        return pd.NaT  # Return NaT for invalid dates
+
 def get_recent_courses(courses):
     # Convert 'course_date' to datetime
     courses['course_date'] = pd.to_datetime(courses['course_date'], format='%m/%Y') 
@@ -100,14 +108,39 @@ def get_recent_courses(courses):
     recent_courses = courses[courses['course_date'].dt.strftime('%m/%Y') <= current_date.strftime('%m/%Y')].sort_values(by='course_date', ascending=False).head(10)
     # Convert 'course_date' back to the original format
     courses['course_date'] = courses['course_date'].apply(format_date)
+    courses['course_date'] = courses['course_date'].apply(clean_date)
     # Get the course titles of the recent courses
     recent_course_titles = recent_courses['course_title'].tolist()
     return recent_course_titles
 
+# Persnoalised recommendations
+# Load data from students.json file
+with open('students.json', 'r') as file:
+    students_data = json.load(file)
+
+def get_personalized_recommendations(username):
+    # Find the corresponding student data based on the username
+    student_data = next((student for student in students_data if student['name'] == username), None)
+    if not student_data:
+        return "Username not found"
+    # Extract interests from the student data
+    interests = student_data['interests']
+    # Initialize array to store personalized recommendations
+    personalized_recommendations = []
+    # Pass each interest keyword to the recommend function and add recommended courses to the array
+    for interest in interests:
+        recommended_courses = recommend(interest)  # Assuming recommend function is defined elsewhere
+        personalized_recommendations.extend(recommended_courses[:5])  # Add top 5 recommended courses for each interest
+    # Shuffle the list of personalized recommendations
+    random.shuffle(personalized_recommendations)
+    return personalized_recommendations
+
 @app.route('/')
 def welcome():
     recent_course_titles = get_recent_courses(courses)
-    if recent_course_titles:
+    personalized_recommendations = get_personalized_recommendations("Vivek")
+    if recent_course_titles and personalized_recommendations:
+        # recent courses part
         recent_courses = []
         for title in recent_course_titles:
             recent_course_data = courses[courses['course_title'] == title].iloc[0]
@@ -117,9 +150,21 @@ def welcome():
                 'course_duration': recent_course_data['course_duration'],
                 'course_url': recent_course_data['course_url']
             })
-        return render_template('welcome.html', recent_courses_list=recent_courses)
+        # recommendations part
+        personalized_rec = []
+        for title in personalized_recommendations:
+            personalized_rec_data = courses[courses['course_title'] == title]
+            if not personalized_rec_data.empty:
+                rec_data = personalized_rec_data.iloc[0]
+                personalized_rec.append({
+                    'name': title,
+                    'course_img': rec_data['course_img'],
+                    'course_duration': rec_data['course_duration'],
+                    'course_url': rec_data['course_url']
+                })
+        return render_template('welcome.html', recent_courses_list=recent_courses, recommended_courses=personalized_rec)
     else:
-        error_message = "No recent courses"
+        error_message = "No recent/recommeded courses"
         return render_template('welcome.html', error_message=error_message)
 
 @app.route('/index', methods=['GET', 'POST'])

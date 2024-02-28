@@ -1,0 +1,28 @@
+[
+    {
+      "name": "Vivek",
+      "password": "abcd",
+      "interests": ["python", "web development", "flask", "django"]
+    },
+    {
+      "name": "Vishwa",
+      "password": "efgh",
+      "interests": ["python", "android development", "data science"]
+    },
+    {
+      "name": "Shreyas",
+      "password": "ijkl",
+      "interests": ["computer networks", "devops", "git", "SQL"]
+    },
+    {
+      "name": "Pranav",
+      "password": "mnop",
+      "interests": ["azure", "app development", "kotlin"]
+    },
+    {
+      "name": "Vishal",
+      "password": "qrst",
+      "interests": ["github", "java", "database management", "nodejs", "django"]
+    }
+  ]
+  
