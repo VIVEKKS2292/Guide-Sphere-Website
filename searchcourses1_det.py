@@ -138,7 +138,7 @@ def get_personalized_recommendations(username):
 @app.route('/')
 def welcome():
     recent_course_titles = get_recent_courses(courses)
-    personalized_recommendations = get_personalized_recommendations("Vivek")
+    personalized_recommendations = get_personalized_recommendations("Vishwa")
     if recent_course_titles and personalized_recommendations:
         # recent courses part
         recent_courses = []
