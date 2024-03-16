@@ -111,6 +111,8 @@ def get_recent_courses(courses):
     courses['course_date'] = courses['course_date'].apply(clean_date)
     # Get the course titles of the recent courses
     recent_course_titles = recent_courses['course_title'].tolist()
+    # For the Data Conversion Back to mm/yyyy Format
+    courses['course_date'] = courses['course_date'].apply(format_date)
     return recent_course_titles
 
 # Persnoalised recommendations
@@ -138,6 +140,7 @@ def get_personalized_recommendations(username):
 @app.route('/')
 def welcome():
     recent_course_titles = get_recent_courses(courses)
+    
     personalized_recommendations = get_personalized_recommendations("Vishwa")
     if recent_course_titles and personalized_recommendations:
         # recent courses part

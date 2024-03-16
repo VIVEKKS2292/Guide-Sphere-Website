@@ -95,7 +95,7 @@ button {
 }
 
 .home-button:hover {
-    background-color: #dfdf18; /* Darker background color on hover */
+    background-color: #ffe588; /* Darker background color on hover */
     color: white;
     border: 1px solid #ffffff
 }
@@ -123,7 +123,7 @@ button {
 }
 
 .switch-buttons a:hover {
-    background-color: #dfdf18;
+    background-color: #ffe588;
     color: white;
     border: 1px solid #ffffff
 }
@@ -138,3 +138,5 @@ button {
     color: white;
     border: 1px solid #ffffff;
 }
+
+

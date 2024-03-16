@@ -117,3 +117,47 @@ def search_books(keyword):
         result_books_list.append(book_details)
     
     return result_books_list
+
+###
+###
+###
+
+# Book Details Function
+def getBook(title):
+    book_data = books[books['book_title'] == title]
+
+    if book_data.empty:
+        return None
+    else:
+        book_data = book_data.iloc[0]
+        book_details = {
+            'book_id': book_data['book_id'],
+            'book_url': book_data['book_url'],
+            'book_img': book_data['book_img'],
+            'book_title': book_data['book_title'],
+            'book_author': book_data['book_author'],
+            'book_desc_text': book_data['book_desc_text'],
+            'book_desc_html': book_data['book_desc_html']
+        }
+        return book_details
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

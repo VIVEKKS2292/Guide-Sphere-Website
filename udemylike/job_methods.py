@@ -95,7 +95,7 @@ def recommend_jobs(keyword):
             'job_salary': jobs.iloc[idx]['job_salary'],
             'job_experience': jobs.iloc[idx]['job_experience'],
             'job_about': jobs.iloc[idx]['job_about'],
-            'job_about': jobs.iloc[idx]['job_about']
+            'job_skills_required': jobs.iloc[idx]['job_skills_required']
         }
         # print(job_details['job_title'])
         recommended_jobs_list.append(job_details)
@@ -121,8 +121,67 @@ def search_jobs(keyword):
             'job_salary': job['job_salary'],
             'job_experience': job['job_experience'],
             'job_about': job['job_about'],
-            'job_about': job['job_about']
+            'job_skills_required': job['job_skills_required']
         }
         result_jobs_list.append(job_details)
     
     return result_jobs_list
+
+###
+###
+###
+
+# Job Details Function
+def getJob(title):
+    job_data = jobs[jobs['job_title'] == title]
+
+    if job_data.empty:
+        return None
+    else:
+        job_data = job_data.iloc[0]
+        job_details = {
+            'job_id': job_data['job_id'],
+            'job_url': job_data['job_url'],
+            'job_title': job_data['job_title'],
+            'job_company':job_data['job_company'],
+            'job_startdate': job_data['job_startdate'],
+            'job_salary': job_data['job_salary'],
+            'job_experience': job_data['job_experience'],
+            'job_about': job_data['job_about'],
+            'job_skills_required': job_data['job_skills_required']
+        }
+        return job_details
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

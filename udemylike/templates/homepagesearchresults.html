@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>General Search | GuideSphere</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='homepage_styles.css') }}">
+        <script>
+            function navigateTohomepage() {
+                // Redirect to homepage route
+                window.location.href = "/";
+            }
+    
+            function navigateTocoursesearchpage() {
+                // Redirect to coursesearchpage route
+                window.location.href = "{{ url_for('coursesearchpage') }}";
+            }
+
+            function navigateTobooksearchpage() {
+                // Redirect to coursesearchpage route
+                window.location.href = "{{ url_for('booksearchpage') }}";
+            }
+
+            function navigateTojobsearchpage() {
+                // Redirect to coursesearchpage route
+                window.location.href = "{{ url_for('jobsearchpage') }}";
+            }
+        </script>
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbarsub1">
+                <h1 style="margin-top: 2%;">GuideSphere</h1>
+            </div>
+            <div class="navbarsub2">
+                <a href="#" class="home-button" onclick="navigateTohomepage()">Home</a>
+                <div class="switch-buttons">
+                    <a href="#" onclick="navigateTocoursesearchpage()">Courses</a>
+                    <a href="#" onclick="navigateTobooksearchpage()">Books</a>
+                    <a href="#" onclick="navigateTojobsearchpage()">Jobs</a>
+                </div>
+                <form action="{{ url_for('homepagesearchresults') }}" method="GET" class="search-form">
+                    <input name="keyword" placeholder="Search here" required>
+                    <button type="submit">Search</button>
+                </form>
+                <button class="get-started">My Profile</button>
+            </div>
+        </div>
+
+        <!-- Search results related to courses -->
+        <h2 style="padding-left: 5%; margin-top: 7%;">Courses Found Related to <strong>"{{ keyword }}"</strong></h2>
+        <div class="items-container">
+            <div class="items-list">
+                {% if home_result_courses_list %}
+                    {% for item in home_result_courses_list %}
+                        <div class="item">
+                            <a href="{{ url_for('coursedetailspage', title=item['course_title']) }}">
+                                <img src="{{ item['course_img'] }}" alt="{{ item['course_title'] }}">
+                            </a>
+                            <h3>{{ item['course_title'] }}</h3>
+                            <p>Duration: {{ item['course_duration'] }}</p>
+                        </div> 
+                    {% endfor %}
+                {% else %}
+                    <h3>No Courses related to "{{ keyword }}" are found.</h3>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Search results related to books -->
+        <h2 style="padding-left: 5%;">Books Found Related to <strong>"{{ keyword }}"</h2>
+        <div class="items-container">
+            <div class="items-list">
+                {% if home_result_books_list %}
+                    {% for item in home_result_books_list %}
+                        <div class="item">
+                            <a href="{{ url_for('bookdetailspage', title=item['book_title']) }}">
+                                <img src="{{ item['book_img'] }}" alt="{{ item['book_title'] }}">
+                            </a>
+                            <h3>{{ item['book_title'] }}</h3>
+                            <p>Author: {{ item['book_author'] }}</p>
+                        </div> 
+                    {% endfor %}
+                {% else %}
+                    <h3>No Books related to "{{ keyword }}" are found.</h3>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Search results related to Jobs -->
+        <h2 style="padding-left: 5%;">Jobs Found Related to <strong>"{{ keyword }}"</h2>
+        <div class="rec-job-postings-container">
+            <div class="rec-job-postings">
+                {% if home_result_jobs_list %}
+                    {% for item in home_result_jobs_list %}
+                        <a href="{{ url_for('jobdetailspage', title=item['job_title']) }}" style="color: black; text-decoration: none;">
+                            <div class="rec-job-posts">
+                                <!-- <img src="{{ item['book_img'] }}" alt="{{ item['book_title'] }}"> -->
+                                <h3>{{ item['job_title'] }}</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6>{{ item['job_company'] }}</h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6>{{ item['job_salary'] }}</h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6>View Details</h6>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <h3>No Jobs related to "{{ keyword }}" are found.</h3>
+                {% endif %}
+            </div>
+        </div>  
+        
+    </body>
+</html>

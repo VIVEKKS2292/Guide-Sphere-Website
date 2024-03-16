@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Homepage</title>
+        <title>Homepage | GuideSphere</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='homepage_styles.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
         <script>
@@ -38,9 +38,9 @@
                     <a href="#" onclick="navigateTobooksearchpage()">Books</a>
                     <a href="#" onclick="navigateTojobsearchpage()">Jobs</a>
                 </div>
-                <form  class="search-form">
-                    <input name="keyword" placeholder="Search here">
-                    <button>Search</button>
+                <form action="{{ url_for('homepagesearchresults') }}" method="GET" class="search-form">
+                    <input name="keyword" placeholder="Search here" required>
+                    <button type="submit">Search</button>
                 </form>
                 <button class="get-started">My Profile</button>
             </div>
@@ -52,7 +52,9 @@
             <div class="items-list">
                 {% for item in recent_courses_list %}
                     <div class="item">
-                        <img src="{{ item['course_img'] }}" alt="{{ item['course_title'] }}">
+                        <a href="{{ url_for('coursedetailspage', title=item['course_title']) }}">
+                            <img src="{{ item['course_img'] }}" alt="{{ item['course_title'] }}">
+                        </a>
                         <h3>{{ item['course_title'] }}</h3>
                         <p>Duration: {{ item['course_duration'] }}</p>    
                     </div> 
@@ -66,7 +68,9 @@
             <div class="items-list">
                 {% for item in personalized_course_recommendations_list %}
                     <div class="item">
-                        <img src="{{ item['course_img'] }}" alt="{{ item['course_title'] }}">
+                        <a href="{{ url_for('coursedetailspage', title=item['course_title']) }}">
+                            <img src="{{ item['course_img'] }}" alt="{{ item['course_title'] }}">
+                        </a>
                         <h3>{{ item['course_title'] }}</h3>
                         <p>Duration: {{ item['course_duration'] }}</p>
                     </div> 
@@ -80,7 +84,9 @@
             <div class="items-list">
                 {% for item in trending_books_list %}
                     <div class="item">
-                        <img src="{{ item['book_img'] }}" alt="{{ item['book_title'] }}">
+                        <a href="{{ url_for('bookdetailspage', title=item['book_title']) }}">
+                            <img src="{{ item['book_img'] }}" alt="{{ item['book_title'] }}">
+                        </a>
                         <h3>{{ item['book_title'] }}</h3>
                         <p>Author: {{ item['book_author'] }}</p>
                     </div> 
@@ -88,18 +94,20 @@
             </div>
         </div>
 
-        <!-- Trending Books Section -->
+        <!-- Recent Job Postings Section -->
         <h2 style="padding-left: 5%;">Recent Job Postings</h2>
         <div class="rec-job-postings-container">
             <div class="rec-job-postings">
                 {% for item in recent_job_postings_list %}
-                    <div class="rec-job-posts">
+                    <a href="{{ url_for('jobdetailspage', title=item['job_title']) }}" style="color: black; text-decoration: none;" >
+                        <div class="rec-job-posts">
                         <!-- <img src="{{ item['book_img'] }}" alt="{{ item['book_title'] }}"> -->
-                        <h3>{{ item['job_title'] }}</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6>{{ item['job_company'] }}</h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6>{{ item['job_salary'] }}</h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6>View Details</h6>
-                    </div> 
+                            <h3>{{ item['job_title'] }}</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <h6>{{ item['job_company'] }}</h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <h6>{{ item['job_salary'] }}</h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <h6>View Details</h6>
+                        </div> 
+                    </a>
                 {% endfor %}
             </div>
         </div>              

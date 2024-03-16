@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Search Results</title>
+    <title>Search Results | GuideSphere</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='jobstyles.css') }}">
     <script>
@@ -94,41 +94,52 @@
             <!-- Search Results for courses -->
             <h2 style="margin-top: 7%; font-size: 50px;">Search Results for <strong>"{{ keyword }}"</strong></h2>
             <div class="search-container">
-                {% for search in results_list %}
-                <div class="search">
-                    <img src="{{ search['course_img'] }}" alt="{{ search['course_title'] }}">
-                    <p>{{ search['course_title'] }}</p>
-                    <p>Duration: {{ search['course_duration'] }}</p>
-                </div>
-                {% endfor %}
+                {% if results_list %}
+                    {% for search in results_list %}
+                    <div class="search">
+                        <img src="{{ search['course_img'] }}" alt="{{ search['course_title'] }}">
+                        <p>{{ search['course_title'] }}</p>
+                        <p>Duration: {{ search['course_duration'] }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <h3>No Courses related to "{{ keyword }}" are found.</h3>
+                {% endif %}
             </div>
         {% elif pageid == '2' %}
             <!-- Search Results for books -->
             <h2 style="margin-top: 7%; font-size: 50px;">Search Results for <strong>"{{ keyword }}"</strong></h2>
             <div class="search-container">
-                {% for search in results_list %}
-                <div class="search">
-                    <img src="{{ search['book_img'] }}" alt="{{ search['book_title'] }}">
-                    <p>{{ search['book_title'] }}</p>
-                    <p>Author: {{ search['book_author'] }}</p>
-                </div>
-                {% endfor %}
+                {% if results_list %}
+                    {% for search in results_list %}
+                    <div class="search">
+                        <img src="{{ search['book_img'] }}" alt="{{ search['book_title'] }}">
+                        <p>{{ search['book_title'] }}</p>
+                        <p>Author: {{ search['book_author'] }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <h3>No Books related to "{{ keyword }}" are found.</h3>
+                {% endif %}
             </div>
         {% elif pageid == '3' %}
             <!-- Search Results for jobs -->
             <h2 style="margin-top: 7%; font-size: 50px;">Search Results for <strong>"{{ keyword }}"</strong></h2>
             <div class="search-container">
-                {% for search in results_list %}
-                    <div class="job-posts">
-                        <div class="job-info">
-                            <h3>{{ search['job_title'] }}</h3>
-                            <h6>{{ search['job_company'] }}</h6>
-                        </div>
-                    </div> 
-                {% endfor %}
+                {% if results_list %}
+                    {% for search in results_list %}
+                        <div class="job-posts">
+                            <div class="job-info">
+                                <h3>{{ search['job_title'] }}</h3>
+                                <h6>{{ search['job_company'] }}</h6>
+                            </div>
+                        </div> 
+                    {% endfor %}
+                {% else %}
+                    <h3>No Jobs related to "{{ keyword }}" are found.</h3>
+                {% endif %}  
             </div>
         {% endif %}
-
 
         <h1>Page id is {{ pageid }}</h1>
     </body>

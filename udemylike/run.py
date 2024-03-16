@@ -4,10 +4,13 @@ from course_methods import recommend_courses
 from course_methods import get_recent_courses
 from course_methods import search_courses 
 from course_methods import get_personalized_course_recommendations
+from course_methods import getCourse 
 from book_methods import recommend_books
 from book_methods import search_books
+from book_methods import getBook
 from job_methods import recommend_jobs 
-from job_methods import search_jobs   
+from job_methods import search_jobs
+from job_methods import getJob      
 
 # Define a blueprint for searchcourses model
 searchcourses_bp = Blueprint('searchcourses', __name__)
@@ -76,6 +79,39 @@ def searchresults():
         return render_template('searchresults.html', pageid=pageid, keyword=keyword, results_list=results)
 
     return render_template('searchresults.html')
+
+@app.route('/homepagesearchresults', methods=['GET'])
+def homepagesearchresults():
+    if request.method == 'GET':
+        keyword = request.args.get('keyword')
+        home_result_courses = search_courses(keyword)
+        home_result_books = search_books(keyword)
+        home_result_jobs = search_jobs(keyword)
+        return render_template('homepagesearchresults.html', keyword=keyword, home_result_courses_list=home_result_courses,
+                            home_result_books_list=home_result_books, home_result_jobs_list=home_result_jobs)
+    
+    return render_template('homepagesearchresults.html')
+
+@app.route('/coursedetailspage/<title>', methods=['GET'])
+def coursedetailspage(title):
+    course = getCourse(title)
+    similar_courses = recommend_courses(title)
+    similar_books = recommend_books(title)
+    return render_template('coursedetailspage.html', course=course, similar_courses_list=similar_courses,
+                           similar_books_list=similar_books)
+
+@app.route('/bookdetailspage/<title>', methods=['GET'])
+def bookdetailspage(title):
+    book = getBook(title)
+    similar_books = recommend_books(title)
+    return render_template('bookdetailspage.html', book=book, similar_books_list=similar_books)
+
+@app.route('/jobdetailspage/<title>', methods=['GET'])
+def jobdetailspage(title):
+    job = getJob(title)
+    related_courses = recommend_courses(title)
+    related_books = recommend_books(title)
+    return render_template('jobdetailspage.html', job=job, related_books_list=related_books, related_courses_list=related_courses)
     
 if __name__ == '__main__':
     app.run(debug=True)

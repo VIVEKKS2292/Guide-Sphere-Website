@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Course Search Page</title>
+        <title>Course Search Page | GuideSphere</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='homepage_styles.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
         <script>
@@ -90,7 +90,7 @@
         </div>
 
         <!-- GIT Courses Section -->
-        <h2 style="padding-left: 5%;">GIT Courses</h2>
+        <h2 style="padding-left: 5%;">GIT Courses( will be called as trending )</h2>
         <div class="items-container">
             <div class="items-list">
                 {% for item in git_courses_list %}
@@ -104,7 +104,7 @@
         </div>
         
         <!-- Apna College Courses Section -->
-        <h2 style="padding-left: 5%; ">Apna College Courses</h2>
+        <h2 style="padding-left: 5%; ">Apna College Courses( will be called as featured )</h2>
         <div class="items-container">
             <div class="items-list">
                 {% for item in apna_college_courses_list %}

@@ -49,18 +49,19 @@ courses = courses[['course_id','course_url', 'course_img', 'course_duration', 'c
        'course_price_original', 'course_instrutor', 'course_title',
        'course_short_desc', 'course_rating', 'course_date', 'course_language',
        'course_outcome_text', 'course_outcome_html', 'course_about_text',
-       'course_about_html']]
+       'course_about_html','course_platform']]
 
 # Function to clean title
 def clean_title(title):
     return re.sub("[^a-zA-Z0-9 ]", "", title)
 
-courses['course_short_desc'] = courses['course_short_desc'].apply(clean_title)
-courses['course_instrutor'] = courses['course_instrutor'].apply(clean_title)
-
 # Convert string(sentence) to lists
-courses['course_short_desc'] = courses['course_short_desc'].apply(lambda x: x.split())
-courses['course_instrutor'] = courses['course_instrutor'].apply(lambda x: x.split())
+courses['temp_course_short_desc'] = courses['course_short_desc']
+courses['temp_course_short_desc'] = courses['temp_course_short_desc'].apply(clean_title)
+courses['temp_course_short_desc'] = courses['temp_course_short_desc'].apply(lambda x: x.split())
+courses['temp_course_instrutor'] = courses['course_instrutor']
+courses['temp_course_instrutor'] = courses['temp_course_instrutor'].apply(clean_title)
+courses['temp_course_instrutor'] = courses['temp_course_instrutor'].apply(lambda x: x.split())
 courses['temp_title'] = courses['course_title']
 courses['temp_title'] = courses['temp_title'].apply(clean_title)
 courses['temp_title'] = courses['temp_title'].apply(lambda x: x.split())
@@ -71,7 +72,7 @@ courses['temp_title'] = courses['temp_title'].apply(lambda x: x.split())
 
 # Recommendation function
 # The ultimate concatenation
-courses['tags'] = courses['temp_title'] + courses['course_short_desc'] + courses['course_instrutor']
+courses['tags'] = courses['temp_title'] + courses['temp_course_short_desc'] + courses['temp_course_instrutor']
 
 # Converting tags from lists to strings
 courses['tags'] = courses['tags'].apply(lambda x: " ".join(x))
@@ -109,6 +110,7 @@ def recommend_courses(keyword):
             'course_about_text': courses.iloc[idx]['course_about_text'],
             'course_about_html': courses.iloc[idx]['course_about_html'],
             'course_id': courses.iloc[idx]['course_id'],
+            'course_platform': courses.iloc[idx]['course_platform'],
         }
         recommended_courses_list.append(course_details)
   
@@ -130,10 +132,12 @@ def format_date(date):
 def clean_date(date_str):
     try:
         return pd.to_datetime(date_str, format='%m/%Y')
-    except ValueError:
-        return pd.NaT  # Return NaT for invalid dates
+    except (ValueError, TypeError):
+        return pd.NaT  # Return NaT for invalid or missing dates
     
 def get_recent_courses():
+    # To prevent that date issue part
+    courses['course_date'] = courses['course_date'].apply(clean_date)
     # Convert 'course_date' to datetime
     courses['course_date'] = pd.to_datetime(courses['course_date'], format='%m/%Y') 
     # Get current month and year
@@ -141,8 +145,8 @@ def get_recent_courses():
     # Filter courses that are nearest or in the same month and year as the current month and year
     recent_courses = courses[courses['course_date'].dt.strftime('%m/%Y') <= current_date.strftime('%m/%Y')].sort_values(by='course_date', ascending=False).head(10)
     # Convert 'course_date' back to the original format
-    recent_courses['course_date'] = recent_courses['course_date'].apply(format_date)
-    recent_courses['course_date'] = recent_courses['course_date'].apply(clean_date)
+    courses['course_date'] = courses['course_date'].apply(format_date)
+    courses['course_date'] = courses['course_date'].apply(clean_date)
     
     recent_courses_list = []
     for idx, course in recent_courses.iterrows():
@@ -163,8 +167,10 @@ def get_recent_courses():
             'course_about_text': course['course_about_text'],
             'course_about_html': course['course_about_html'],
             'course_id': course['course_id'],
+            'course_platform': course['course_platform'],
         }
         recent_courses_list.append(course_details)
+    courses['course_date'] = courses['course_date'].apply(format_date)
 
     return recent_courses_list
 
@@ -227,7 +233,54 @@ def search_courses(keyword):
             'course_about_text': course['course_about_text'],
             'course_about_html': course['course_about_html'],
             'course_id': course['course_id'],
+            'course_platform': course['course_platform'],
         }
         result_courses_list.append(course_details)
     
     return result_courses_list
+
+###
+###
+###
+
+# Course Details Function
+def getCourse(title):
+    course_data = courses[courses['course_title'] == title]
+
+    if course_data.empty:
+        return None
+    else:
+        course_data = course_data.iloc[0]
+        course_details = {
+            'course_url': course_data['course_url'],
+            'course_img': course_data['course_img'],
+            'course_duration': course_data['course_duration'],
+            'course_price': course_data['course_price'],
+            'course_price_original': course_data['course_price_original'],
+            'course_instrutor': course_data['course_instrutor'],
+            'course_title': course_data['course_title'],
+            'course_short_desc': course_data['course_short_desc'],
+            'course_rating': course_data['course_rating'],
+            'course_date': course_data['course_date'],
+            'course_language': course_data['course_language'],
+            'course_outcome_text': course_data['course_outcome_text'],
+            'course_outcome_html': course_data['course_outcome_html'],
+            'course_about_text': course_data['course_about_text'],
+            'course_about_html': course_data['course_about_html'],
+            'course_id': course_data['course_id'],
+            'course_platform': course_data['course_platform'],
+        }
+        return course_details
+
+
+
+
+
+
+
+
+
+
+
+
+
