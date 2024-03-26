@@ -9,33 +9,91 @@ import re
 from datetime import datetime
 import json
 import random
-# Read Data
+# Read Data : Google Sheets
 # Define the scope of access (can be readonly or readwrite)
-scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-# Path to your credentials JSON file
-credentials ={
-  "type": "service_account",
-  "project_id": "guidesphere",
-  "private_key_id": "1149cc64b75a7ef6345b783fbe7729a82d40be19",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCd6X9VmPUeADi1\nVX1sI1Tz8shoco7SW/9mgYOnHpcO/dRBWF3CkEzXbuABX8jtlknRasgB6SGxyrmX\nXdfsNFS++14WQuRJsLUXHOlcAES6EOtwTpY0NX368CARQh72on8r0zmu13y5SRRc\nhH3bpvvqX3aaD8TMihZe2RtvuEDGWGxefVyfZIVjJBfpa1UR7F/Q9UzXX71zv2EG\naMb8dIt6md7xJAn7+hFKjVpIfYA3+8c5lBI/8uONuo5WoZxeFdLsRzaYYlsDz7dz\n0QwniQiEFe3XS33z8SavfXvQNg7hJqaQjBXB6dVBoAWz4mAjbjDi955Gqbib2eEg\nVkqCJYmFAgMBAAECggEADKZh3veL20VlRZF9pKYH7irqxwM2Ub+w7ANACqk2rKrE\n0B9GE4n/vdpR84o6zF2XuED3mL+WRWnaCDgqTe+7QjlcxifBpe2T9DAKuaYD22vz\nkGGbQr9uQiXuS7OiS1ulGFupaUo14ZnrGaY7dtcfoxzWoWzV9RSyyhJWUlLOTZUz\nje2i27KDJ1MnXJupM+S4OSL0aKIfHiJ46a1RjgAKrZ2QufTxcKT/nvwbF31EUPfr\nHoQSrIrKqP3z6/hVD/I92sUiJDK+6fhpYzFCxcSb+BUa7VSLeXKjDmsv9C3zkIbN\nBRevP07tLGA/UM7G7wkL9aer3vUwn8e/0lBctLpjwQKBgQDP7DABNIa0+Zvt2456\nmHDjo4HVONmr98I/grad7Tdke8tJPRBdX5eu61AP2skm66+Fx1oNsdNzCW37apBc\nDLZIcrEWEMSRY7089W7rJl06rpt/EZMdAgsIOwni8bSDQOVFBJ79tOo97JIgf4SE\nddR2t+TSJOWQGJo6fc3OdI+CSQKBgQDCbPpTc/eE1tdR8/gSYJ4Zr32IzbMJ9may\nuFj2rEWak+i0WWVUwxRzJZ288PQ8hFzUlqR0rXQ6AvPhVcVTzx2G6i2idsyLd7ru\n9NfXhNu/86iDIjLUUOG0sAbXBdAQhxORJLYr5bAV88D2zg9EO5ibHxiTDL80dfeZ\nqUDaNTmNXQKBgQC0h8ealEfOBNhtqu/H5GpITKSjRMxCs0l2qYD0GI668X2tZpa5\n7BEgsHIAgh+bapIpHtFDCL6mqG5VGM6lDeiLeQHnPcHe1vHtZtDa3aGfHRIoP1Mz\noZ2AlPpdkS4BtKwcxAlkEdw8zhaGnxGpjUFfnwXPrHeiKKpo1OiINM6R+QKBgQDA\niTMMWZcQUcFBQxyy9kMapJLoWuumPgBNlAllngv/m+GiV7TlT5p8vQ+MAAGdvGZB\nkDyj3vFuUWY6C7ox2LUg2d7/OC4vHw5bfNQSdVs4p46E7eTwJHifeoILhZIaC+nw\nni5ZIkhSNOUug7jSlUH2u8CWPtVKmlfsL5Qtgu/PcQKBgC2YOnZBEXrybwi/ipAv\nSIShjih+F6oAYubdIwdPsBKsjA4twn+PPlIhCKNAPlD37/zOkLXVA/e2eqqYS6cP\nzLi6WBuMkoNXA3KBXN69X7YmRtpXH7J6RNpfJB1DOSYkMKEAVg8IP3my9QGvFXem\nrfZ6qUERkYXa3SXE58Mn8Vlc\n-----END PRIVATE KEY-----\n",
-  "client_email": "guide-sphere-vivek-2292@guidesphere.iam.gserviceaccount.com",
-  "client_id": "116909885100955444844",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/guide-sphere-vivek-2292%40guidesphere.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
-# Authenticate using service account credentials
-credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials, scope)
-client = gspread.authorize(credentials)
+# scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+# # Path to your credentials JSON file
+# credentials ={
+#   "type": "service_account",
+#   "project_id": "guidesphere",
+#   "private_key_id": "1149cc64b75a7ef6345b783fbe7729a82d40be19",
+#   "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCd6X9VmPUeADi1\nVX1sI1Tz8shoco7SW/9mgYOnHpcO/dRBWF3CkEzXbuABX8jtlknRasgB6SGxyrmX\nXdfsNFS++14WQuRJsLUXHOlcAES6EOtwTpY0NX368CARQh72on8r0zmu13y5SRRc\nhH3bpvvqX3aaD8TMihZe2RtvuEDGWGxefVyfZIVjJBfpa1UR7F/Q9UzXX71zv2EG\naMb8dIt6md7xJAn7+hFKjVpIfYA3+8c5lBI/8uONuo5WoZxeFdLsRzaYYlsDz7dz\n0QwniQiEFe3XS33z8SavfXvQNg7hJqaQjBXB6dVBoAWz4mAjbjDi955Gqbib2eEg\nVkqCJYmFAgMBAAECggEADKZh3veL20VlRZF9pKYH7irqxwM2Ub+w7ANACqk2rKrE\n0B9GE4n/vdpR84o6zF2XuED3mL+WRWnaCDgqTe+7QjlcxifBpe2T9DAKuaYD22vz\nkGGbQr9uQiXuS7OiS1ulGFupaUo14ZnrGaY7dtcfoxzWoWzV9RSyyhJWUlLOTZUz\nje2i27KDJ1MnXJupM+S4OSL0aKIfHiJ46a1RjgAKrZ2QufTxcKT/nvwbF31EUPfr\nHoQSrIrKqP3z6/hVD/I92sUiJDK+6fhpYzFCxcSb+BUa7VSLeXKjDmsv9C3zkIbN\nBRevP07tLGA/UM7G7wkL9aer3vUwn8e/0lBctLpjwQKBgQDP7DABNIa0+Zvt2456\nmHDjo4HVONmr98I/grad7Tdke8tJPRBdX5eu61AP2skm66+Fx1oNsdNzCW37apBc\nDLZIcrEWEMSRY7089W7rJl06rpt/EZMdAgsIOwni8bSDQOVFBJ79tOo97JIgf4SE\nddR2t+TSJOWQGJo6fc3OdI+CSQKBgQDCbPpTc/eE1tdR8/gSYJ4Zr32IzbMJ9may\nuFj2rEWak+i0WWVUwxRzJZ288PQ8hFzUlqR0rXQ6AvPhVcVTzx2G6i2idsyLd7ru\n9NfXhNu/86iDIjLUUOG0sAbXBdAQhxORJLYr5bAV88D2zg9EO5ibHxiTDL80dfeZ\nqUDaNTmNXQKBgQC0h8ealEfOBNhtqu/H5GpITKSjRMxCs0l2qYD0GI668X2tZpa5\n7BEgsHIAgh+bapIpHtFDCL6mqG5VGM6lDeiLeQHnPcHe1vHtZtDa3aGfHRIoP1Mz\noZ2AlPpdkS4BtKwcxAlkEdw8zhaGnxGpjUFfnwXPrHeiKKpo1OiINM6R+QKBgQDA\niTMMWZcQUcFBQxyy9kMapJLoWuumPgBNlAllngv/m+GiV7TlT5p8vQ+MAAGdvGZB\nkDyj3vFuUWY6C7ox2LUg2d7/OC4vHw5bfNQSdVs4p46E7eTwJHifeoILhZIaC+nw\nni5ZIkhSNOUug7jSlUH2u8CWPtVKmlfsL5Qtgu/PcQKBgC2YOnZBEXrybwi/ipAv\nSIShjih+F6oAYubdIwdPsBKsjA4twn+PPlIhCKNAPlD37/zOkLXVA/e2eqqYS6cP\nzLi6WBuMkoNXA3KBXN69X7YmRtpXH7J6RNpfJB1DOSYkMKEAVg8IP3my9QGvFXem\nrfZ6qUERkYXa3SXE58Mn8Vlc\n-----END PRIVATE KEY-----\n",
+#   "client_email": "guide-sphere-vivek-2292@guidesphere.iam.gserviceaccount.com",
+#   "client_id": "116909885100955444844",
+#   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+#   "token_uri": "https://oauth2.googleapis.com/token",
+#   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+#   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/guide-sphere-vivek-2292%40guidesphere.iam.gserviceaccount.com",
+#   "universe_domain": "googleapis.com"
+# }
+# # Authenticate using service account credentials
+# credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials, scope)
+# client = gspread.authorize(credentials)
 
-# Open the Google Sheets document
-sheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1FelQDvbaIFUhLUNsY0SrWazFCywDdrjhj5fI1t9gMBM/edit#gid=1389387669")
-worksheet = sheet.get_worksheet(0)  # Assuming the data is in the first worksheet
-# Read courses data into a pandas DataFrame
-courses_sheets = worksheet.get_all_records()
-courses = pd.DataFrame(courses_sheets)
+# # Open the Google Sheets document
+# sheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1FelQDvbaIFUhLUNsY0SrWazFCywDdrjhj5fI1t9gMBM/edit#gid=1389387669")
+# worksheet = sheet.get_worksheet(0)  # Assuming the data is in the first worksheet
+# # Read courses data into a pandas DataFrame
+# courses_sheets = worksheet.get_all_records()
+# courses = pd.DataFrame(courses_sheets)
+
+
+# Read Data : MongoDB
+# from pymongo import MongoClient
+# # Connect to MongoDB
+# mongo_client = MongoClient('mongodb://localhost:27017')
+# db = mongo_client.coursesdf  # Database name 'coursesdf'
+# collection = db.courses_coll_1  # Collection name 'courses_coll_1'
+# # Read data from MongoDB into a list of dictionaries
+# data_from_mongodb = list(collection.find())
+# # Convert the list of dictionaries to a pandas DataFrame
+# courses = pd.DataFrame(data_from_mongodb)
+
+
+# Read Data : MySQL xampp
+import mysql.connector
+# Connect to MySQL database
+connection = mysql.connector.connect(
+    host="localhost",
+    user="root",  # Replace with your MySQL username
+    password="",  # Replace with your MySQL password
+    database="courses_xam"  # Replace with the name of your database
+)
+# Define the SQL query to fetch data from the table
+query = "SELECT * FROM courses_xam_1"  # Replace 'your_table' with the name of your table
+# Execute the query and fetch the results
+cursor = connection.cursor()
+cursor.execute(query)
+data = cursor.fetchall()
+# Convert the fetched data into a pandas DataFrame
+courses = pd.DataFrame(data, columns=[i[0] for i in cursor.description])
+# Close the cursor and connection
+cursor.close()
+connection.close()
+
+
+# Read Data : MySQL WorkBench
+# import mysql.connector
+# # Connect to MySQL database
+# # Connect to MySQL database
+# mysql_connection = mysql.connector.connect(
+#     host="127.0.0.1",
+#     user="root",
+#     password="Vivden@@21DB",
+#     database="courses_wk"
+# )
+# # Define the SQL query to fetch data from the table
+# query = "SELECT * FROM courses_wk_1"  # Replace 'your_table' with the name of your table
+# # Execute the query and fetch the results
+# cursor = mysql_connection.cursor()
+# cursor.execute(query)
+# data = cursor.fetchall()
+# # Convert the fetched data into a pandas DataFrame
+# courses = pd.DataFrame(data, columns=[i[0] for i in cursor.description])
+# # Close the cursor and connection
+# cursor.close()
+# mysql_connection.close()
+
 
 ###
 ###
@@ -271,9 +329,6 @@ def getCourse(title):
             'course_platform': course_data['course_platform'],
         }
         return course_details
-
-
-
 
 
 
