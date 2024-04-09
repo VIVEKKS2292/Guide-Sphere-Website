@@ -1,1 +1,1 @@
-course
+selected_education

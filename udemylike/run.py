@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect
+from werkzeug.utils import secure_filename
+import os
 from flask import Blueprint
 from course_methods import recommend_courses
 from course_methods import get_recent_courses
@@ -10,7 +12,15 @@ from book_methods import search_books
 from book_methods import getBook
 from job_methods import recommend_jobs 
 from job_methods import search_jobs
-from job_methods import getJob      
+from job_methods import getJob  
+from userdata_methods import getuserdata    
+from userdata_methods import insert_user_fullName
+from userdata_methods import insert_user_moreAboutUser
+from userdata_methods import insert_user_userPhoto
+from userdata_methods import insert_user_interests
+from userdata_methods import delete_user_interests
+from userdata_methods import insert_user_education
+from userdata_methods import delete_user_education
 
 # Define a blueprint for searchcourses model
 searchcourses_bp = Blueprint('searchcourses', __name__)
@@ -112,6 +122,65 @@ def jobdetailspage(title):
     related_courses = recommend_courses(title)
     related_books = recommend_books(title)
     return render_template('jobdetailspage.html', job=job, related_books_list=related_books, related_courses_list=related_courses)
+
+email = 'acd@gmail.com'
+UPLOAD_FOLDER = r'D:\Coding\Guide Sphere\udemylike\static\uploads'
+app.secret_key = "secret key"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+ALLOWED_EXTENSTIONS = set (['png','jpg','jpeg','gif'])
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSTIONS
+
+@app.route('/myprofilepage/<section>', methods=['GET', 'POST'])
+def myprofilepage(section):
+    if section == 'userPhotoDetails' and request.method == 'POST':
+        # Check if a file was uploaded
+        if 'userPhoto' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['userPhoto']
+        if file.filename == '':
+            flash('No image selected for uploading')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            insert_user_userPhoto(email, filename)
+            flash('successfully uploaded')
+        else:
+            flash('Allowed image types are - png, jpg, jpeg, gif')
+            return redirect(request.url)
+
+    if section == 'basicDetails' and request.method == 'POST':
+        fullName = request.form.get('fullName')
+        insert_user_fullName(email, fullName)
+
+    if section == 'interestsDetails' and request.method == 'POST':
+        interests = request.form.get('interests')
+        insert_user_interests(email, interests)
+
+    if section == 'deleteinterestsDetails' and request.method == 'POST':
+        selected_interests = request.form.getlist('selected_interests[]')
+        delete_user_interests(email, selected_interests)
+
+    if section == 'moreAboutUserDetails' and request.method == 'POST':
+        moreAboutUser = request.form.get('moreAboutUser')
+        insert_user_moreAboutUser(email, moreAboutUser)
+    
+    if section == 'educationDetails' and request.method == 'POST':
+        collegeName = request.form.get('collegeName')
+        specialization = request.form.get('specialization')
+        grade = request.form.get('grade')
+        insert_user_education(email, collegeName, specialization, grade)
+    
+    if section == 'deleteducationDetails' and request.method == 'POST':
+        selected_education = request.form.getlist('selected_education[]')
+        delete_user_education(email, selected_education)
+
+    user = getuserdata(email)
+    return render_template('myprofilepage.html', user=user)
+
     
 if __name__ == '__main__':
     app.run(debug=True)

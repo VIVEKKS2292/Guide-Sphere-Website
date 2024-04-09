@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+    <head>
+        <title>My Profile | GuideSphere</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+        <script>
+            function navigateTohomepage() {
+                // Redirect to homepage route
+                window.location.href = "/";
+            }
+    
+            function navigateTocoursesearchpage() {
+                // Redirect to coursesearchpage route
+                window.location.href = "{{ url_for('coursesearchpage') }}";
+            }
+
+            function navigateTobooksearchpage() {
+                // Redirect to coursesearchpage route
+                window.location.href = "{{ url_for('booksearchpage') }}";
+            }
+
+            function navigateTojobsearchpage() {
+                // Redirect to coursesearchpage route
+                window.location.href = "{{ url_for('jobsearchpage') }}";
+            }
+
+            function navigateTomyprofilepage() {
+                // Redirect to coursesearchpage route
+                window.location.href = "{{ url_for('myprofilepage', section='default') }}";
+            }
+
+            // Function to show the popup
+            function showPopup() {
+                document.getElementById('popup').style.display = 'block';
+            }
+
+            // Function to close the popup
+            function closePopup() {
+                document.getElementById('popup').style.display = 'none';
+            }
+
+            // Function to show the upload popup
+            function showUploadPopup() {
+                document.getElementById('uploadPopup').style.display = 'block';
+            }
+
+            // Function to close the upload popup
+            function closeUploadPopup() {
+                document.getElementById('uploadPopup').style.display = 'none';
+            }
+
+            // Function to handle photo upload
+            function uploadPhoto() {
+                // Get the file input element
+                var fileInput = document.getElementById('id_userPhoto');
+                if (fileInput.files.length > 0) {
+                    // A file has been selected
+                    alert('Photo uploaded successfully!');
+                    closeUploadPopup(); // Close the popup after upload
+                } else {
+                    // No file selected
+                    alert('Please Upload a Photo before submitting.');
+                    event.preventDefault(); // Prevent form submission
+                }
+            }
+
+            // Function to show the User Basic Details popup
+            function showBasicDetailsPopup() {
+                document.getElementById('basicDetailsPopup').style.display = 'block';
+            }
+
+            // Function to close the User Basic Details popup
+            function closeBasicDetailsPopup() {
+                document.getElementById('basicDetailsPopup').style.display = 'none';
+            }
+
+            // Function to save basic details
+            function saveBasicDetails() {
+                // Check if the input field is empty
+                var fullNameInput = document.getElementById('id_fullName');
+                if (fullNameInput.value.trim() === '') {
+                    alert('Please fill out the full name field.');
+                    event.preventDefault(); // Prevent form submission
+                }else{
+                    alert('Basic details saved successfully!');
+                    closeBasicDetailsPopup(); // Close the popup after saving
+                }
+            }
+
+            // Function to show the Education Details pop-up
+            function showEducationPopup() {
+                document.getElementById("educationPopup").style.display = "block";
+            }
+
+            // Function to close the Education Details pop-up
+            function closeEducationPopup() {
+                document.getElementById("educationPopup").style.display = "none";
+            }
+
+            // Function to save Education Details (Sample function)
+            function saveEducationDetails() {
+                // Check if the input field is empty
+                var collegeName = document.getElementById('id_collegeName');
+                var specialization = document.getElementById('id_specialization');
+                var grade = document.getElementById('id_grade');
+                if (collegeName.value.trim() === '' || specialization.value.trim() === '' || grade.value.trim() === '') {
+                    alert('Please fill out the all field.');
+                    event.preventDefault(); // Prevent form submission
+                }else{
+                    alert('Education saved successfully!');
+                    closeBasicDetailsPopup(); // Close the popup after saving
+                }
+            }
+
+            // Function to show the Delete Education pop-up
+            function showdeleteducationPopup() {
+                document.getElementById("deleteducationPopup").style.display = "block";
+            }
+
+            // Function to close the Delete Interests pop-up
+            function closedeleteducationPopup() {
+                document.getElementById("deleteducationPopup").style.display = "none";
+            }
+
+            // Function to Delete Education (Sample function)
+            function deleteducationDetails() {
+                
+            }
+
+            // Function to show the Interests pop-up
+            function showinterestsPopup() {
+                document.getElementById("interestsPopup").style.display = "block";
+            }
+
+            // Function to close the Interests pop-up
+            function closeinterestsPopup() {
+                document.getElementById("interestsPopup").style.display = "none";
+            }
+
+            // Function to save Interests (Sample function)
+            function saveinterestsDetails() {
+                // Check if the input field is empty
+                var interestsInput = document.getElementById('id_interests');
+                if (interestsInput.value.trim() === '') {
+                    alert('Please choose one interest.');
+                    event.preventDefault(); // Prevent form submission
+                }else{
+                    alert('Interests saved successfully!');
+                    closeinterestsPopup(); // Close the popup after saving
+                }
+            }
+
+            // Function to show the Delete Interests pop-up
+            function showdeleteinterestsPopup() {
+                document.getElementById("deleteinterestsPopup").style.display = "block";
+            }
+
+            // Function to close the Delete Interests pop-up
+            function closedeleteinterestsPopup() {
+                document.getElementById("deleteinterestsPopup").style.display = "none";
+            }
+
+            // Function to Delete Interests (Sample function)
+            function deleteinterestsDetails() {
+                // Get all selected checkboxes
+                var checkboxes = document.querySelectorAll('input[name="selected_interests[]"]:checked');
+                
+                // Check if no checkboxes are selected
+                if (checkboxes.length === 0) {
+                    alert('Please select at least one interest to delete.');
+                    event.preventDefault(); // Prevent form submission
+                } else {
+                    alert('Selected interests will get deleted!!');
+                    closeBasicDetailsPopup();
+                }
+            }
+
+             // Function to show the moreAboutUser Popup
+             function showmoreAboutUserPopup() {
+                document.getElementById('moreAboutUserPopup').style.display = "block";
+            }
+
+            // Function to close the moreAboutUser pop-up
+            function closemoreAboutUserPopup() {
+                document.getElementById('moreAboutUserPopup').style.display = "none";
+            }
+
+            // Function to save moreAboutUser (Sample function)
+            function savemoreAboutUserDetails() {
+                // Check if the input field is empty
+                var moreAboutuserInput = document.getElementById('id_moreAboutuser');
+                if (moreAboutuserInput.value.trim() === '') {
+                    alert('Please fill out the More About User field.');
+                    event.preventDefault(); // Prevent form submission
+                }else{
+                    alert('More About User Details saved successfully!');
+                    closeBasicDetailsPopup(); // Close the popup after saving
+                }
+            }
+
+            function toggleButtonColor(button) {
+                event.preventDefault(); // Prevent form submission
+                button.classList.toggle('clicked');
+            }
+        </script>
+        <style>
+            /* CSS for the profile section */
+            .profile-section {
+                background-color: #fff; /* Set background color to white */
+                border-radius: 10px; /* Add curved corners */
+                padding: 20px; /* Add padding */
+                margin-top: 2%;
+                margin-left: 20%;
+                margin-right: 20%;
+                box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Add shadow */
+                border: 2px solid transparent; /* Add transparent border */
+            }
+
+            .profile-section:hover{
+                border-color: #d1d1d1; /* Add blue border on hover */
+            }
+
+            .profile-section:hover {
+                background-color: #f0f0f0; /* Light background color on hover */
+                box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .profile-details{
+                cursor: pointer; /* Change cursor to hand */
+            }
+
+            .profile1-details{
+                cursor: pointer; /* Change cursor to hand */
+                display: flex; /* Use flexbox layout */
+            }
+
+            .profile1-details-right {
+                flex: 1; /* Allow profile info to take remaining space */
+                border-left: 1px solid #ccc; /* Add border to the left */
+                padding-left: 20px; /* Add padding to separate text from the border */
+            }
+
+            .profile1-details-right p{
+                text-align: center;
+                color: #989898; 
+            }
+
+            .profile-section {
+                position: relative; /* Make the profile section relatively positioned */
+            }
+
+            .add-button {
+                position: absolute;
+                top: 5px; /* Adjust top position */
+                right: 5px; /* Adjust right position */
+                background-color: transparent;
+                color: #007bff; /* Blue color */
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold; /* Increase font weight */
+                padding: 8px 12px; /* Increase padding for a thicker appearance */
+                border-radius: 5px; /* Add border radius for rounded corners */
+            }
+
+            /* CSS for the popup */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+                z-index: 9999; /* Ensure the popup appears on top of other content */
+            }
+
+            .popup-content {
+                background-color: #fff;
+                width: 300px;
+                padding: 20px;
+                border-radius: 10px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .popup-content h2 {
+                margin-top: 0;
+                margin-left: 1%;
+            }
+
+            .popup-content button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                cursor: pointer;
+            }
+
+            .bold {
+                font-weight: bold;
+            }
+
+            /* CSS for User Basic Details Popup */
+             .popup-content {
+                background-color: #fff;
+                width: 400px; /* Adjust width as needed */
+                padding: 20px;
+                border-radius: 10px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .popup-content h2 {
+                margin-top: 0;
+            }
+
+            .popup-content label {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .popup-content input[type="text"] {
+                width: calc(100% - 40px); /* Adjust input width */
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .popup-content .button-container {
+                text-align: right; /* Align buttons to the right */
+            }
+
+            .popup-content button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 10px; /* Add margin between buttons */
+                display: inline-block;
+            }
+
+            .popup-content button.cancel {
+                background-color: transparent;
+                color: #007bff; /* Change color of cancel button text */
+            }
+
+            .popup-content button.delete {
+                background-color: #8B0000; /* Dark red color */
+                margin-left: 0; /* Remove margin for delete button */
+            }
+
+            /* CSS class for styling the select element */
+            .custom-select {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                font-size: 16px; /* Adjust font size as needed */
+                background-color: #fff; /* Background color */
+                color: #333; /* Text color */
+                appearance: none; /* Remove default appearance (for modern browsers) */
+            }
+
+            /* CSS class for styling the select options */
+            .custom-select option {
+                background-color: #fff; /* Background color */
+                color: #333; /* Text color */
+
+            }
+
+            .deletebutton.clicked {
+                background-color: red;
+            }
+            
+            .deletebutton:hover {
+                transition: 0.3s;
+                background-color: rgb(208, 103, 103);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbarsub1">
+                <h1 style="margin-top: 2%;">GuideSphere</h1>
+            </div>
+            <div class="navbarsub2">
+                <a href="#" class="home-button" onclick="navigateTohomepage()">Home</a>
+                <div class="switch-buttons">
+                    <a href="#" onclick="navigateTocoursesearchpage()">Courses</a>
+                    <a href="#" onclick="navigateTobooksearchpage()">Books</a>
+                    <a href="#" onclick="navigateTojobsearchpage()">Jobs</a>
+                </div>
+                <form action="{{ url_for('homepagesearchresults') }}" method="GET" class="search-form">
+                    <input name="keyword" placeholder="Search here" required>
+                    <button type="submit">Search</button>
+                </form>
+                <button class="get-started" onclick="navigateTomyprofilepage()">My Profile</button>
+            </div>
+        </div>
+        <!-- <p>This is a Profile Page</p>
+        <p>Email: {{ user['email'] }}</p>
+        <p>Password:  {{ user['password'] }}</p>
+        <p>Interests:  {{ user['interests'] }}</p> -->
+
+        <!-- Profile section -->
+        <!-- User Basic Details -->
+        <div class="profile-section" style="margin-top: 7%;">
+            <div class="profile1-details">
+                <div class="profile1-details-left" onclick="showUploadPopup()">
+                    {% if user['userPhoto'] %}
+                        <img src="/static/uploads/{{ user['userPhoto'] }}" alt="{{ user['email'] }}" width="200px" height="200px">
+                    {% else %}
+                        <img src="/static/images/addimage.png" alt="Add your image" width="200px" height="200px">
+                    {% endif %}
+                </div>
+                <div class="profile1-details-right" onclick="showBasicDetailsPopup()">
+                    {% if user['fullName'] %}
+                        <h1>{{ user['fullName'] }}</h1>
+                    {% else %}
+                        <h1>Add your name</h1>
+                    {% endif %}
+                    <p>{{ user['email'] }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Education Details  -->
+        <div class="profile-section" >
+            <h3>Education</h3>    
+            <button class="add-button" onclick="showEducationPopup()">Add</button> 
+            <div class="profile-details" onclick="showEducationPopup()">
+                {% if user['education'] %}
+                    <ul>
+                        {% for education_obj in user['education'] %}
+                                <strong>College Name:</strong> {{ education_obj['collegeName'] }} <br>
+                                <strong>Specialization:</strong> {{ education_obj['specialization'] }} <br>
+                                <strong>Grade:</strong> {{ education_obj['grade'] }} <br>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Add your education details</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- User Interests -->
+        <div class="profile-section" >
+            <h3>Interests</h3>
+            <button class="add-button" onclick="showinterestsPopup()">Add</button> 
+            <div class="profile-details"  onclick="showinterestsPopup()">
+                {% if user['interests'] %}
+                <ul>
+                    {% for interest in user['interests'] %}
+                        <li>{{ interest }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p>Add your interests here</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- More about User -->
+        <div class="profile-section" >
+            <h3>Tell us more about yourself</h3>
+            <div class="profile-details" onclick="showmoreAboutUserPopup()">
+                {% if user['moreAboutUser'] %}
+                    <p>{{ user['moreAboutUser'] }} &nbsp;&nbsp;<img src="/static/images/pencil.png" alt="This is a pencil image" style="width: 20px; height: 20px;"></p>
+                {% else %}       
+                    <p>Tell us more about your self &nbsp;&nbsp;<img src="/static/images/pencil.png" alt="This is a pencil image" style="width: 20px; height: 20px;"></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Popup Section -->
+        <!-- Popup for Uploadig image -->
+        <div class="popup" id="uploadPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closeUploadPopup()">&times;</span>
+                <h2>Upload a recent photo</h2>
+                <p>Only png, jpg, jpeg, gif formats</p>
+                <form action="{{ url_for('myprofilepage', section='userPhotoDetails') }}" method="POST" enctype="multipart/form-data">
+                    <input type="file" id="id_userPhoto" name="userPhoto">
+                    <button type="submit" onclick="uploadPhoto()">Upload</button>
+                </form>
+            </div>
+        </div>       
+        
+        <!-- Popup for User Basic Details -->
+        <div class="popup" id="basicDetailsPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closeBasicDetailsPopup(); ">&times;</span>
+                <h2>Basic Details</h2>
+                <form action="{{ url_for('myprofilepage', section='basicDetails') }}" method="POST" >
+                    <label for="id_fullName">Full name:</label>
+                    <input type="text" id="id_fullName" name="fullName" placeholder="Enter your full name">
+                    <div class="button-container">
+                        <button onclick="closeBasicDetailsPopup(); return false;" class="cancel">Cancel</button>
+                        <button type="submit" onclick="saveBasicDetails()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pop-up for Education Details -->
+        <div class="popup" id="educationPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closeEducationPopup()">&times;</span>
+                <h2>Education Details</h2>
+                <form action="{{ url_for('myprofilepage', section='educationDetails') }}" method="POST">
+                    <label for="collegeName">College full name:</label>
+                    <input type="text" id="id_collegeName" name="collegeName" placeholder="Enter college full name">
+                    <label for="specialization">Specialization:</label>
+                    <input type="text" id="id_specialization" name="specialization"placeholder="Enter specialization">
+                    <label for="grade">Grade:</label>
+                    <input type="text" id="id_grade" name="grade" placeholder="Enter grade/percentage">
+                    <div class="button-container">
+                        <button onclick="closeEducationPopup(); showdeleteducationPopup(); return false;" class="delete">Delete</button>
+                        <button onclick="closeEducationPopup(); return false;" class="cancel">Cancel</button>
+                        <button onclick="saveEducationDetails()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pop up for deleting Education -->
+        <div class="popup" id="deleteducationPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closedeleteducationPopup()">&times;</span>
+                <h2>Education Details</h2>
+                <form action="{{ url_for('myprofilepage', section='deleteducationDetails') }}" method="POST" >
+                    {% if user['education'] %}
+                    <ul>
+                        {% for education_obj in user['education'] %}
+                        <li>
+                            <input type="checkbox" name="selected_education[]" value="{{ education_obj['collegeName']  }}"> 
+                            <strong>College Name:</strong> {{ education_obj['collegeName'] }} <br>
+                            <strong>Specialization:</strong> {{ education_obj['specialization'] }} <br>
+                            <strong>Grade:</strong> {{ education_obj['grade'] }} <br>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                        <p>Nothing to delete</p>
+                    {% endif %}
+                    <div class="button-container">
+                        <button type="submit">Delete Selected</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pop up for Interests -->
+        <div class="popup" id="interestsPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closeinterestsPopup()">&times;</span>
+                <h2>Interests/Feilds</h2>
+                <form action="{{ url_for('myprofilepage', section='interestsDetails') }}" method="POST" autocomplete="off">
+                    <label for="id_interests">Select your interests:</label>
+                    <select id="id_interests" name="interests" class="custom-select">
+                        <option value="">Select your interest</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Artificial Intellingnece">Artificial Intellingnece</option>
+                        <option value="React">React</option>
+                        <option value="Programming">Programming</option>
+                        <option value="DevOps">DevOps</option>
+                        <option value="Kubernets">Kubernets</option>
+                        <option value="Mobile Application Development">Mobile Application Development</option>
+                        <option value="Node.js">Node.js</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                        <option value="Database Management">Database Management</option>
+                    </select>
+                    <div class="button-container">
+                        <button onclick="closeinterestsPopup(); showdeleteinterestsPopup(); return false;" class="delete">Delete</button>
+                        <button onclick="closeinterestsPopup(); return false;" class="cancel">Cancel</button>
+                        <button type="submit" onclick="saveinterestsDetails()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pop up for deleting Interests -->
+        <div class="popup" id="deleteinterestsPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closedeleteinterestsPopup()">&times;</span>
+                <h2>Interests/Feilds</h2>
+                <form action="{{ url_for('myprofilepage', section='deleteinterestsDetails') }}" method="POST" >
+                    {% if user['interests'] %}
+                    <ul>
+                        {% for interest in user['interests'] %}
+                        <li>
+                            <input type="checkbox" name="selected_interests[]" value="{{ interest }}"> {{ interest }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                        <p>Nothing to delete</p>
+                    {% endif %}
+                    <div class="button-container">
+                        <button type="submit" onclick="deleteinterestsDetails()">Delete Selected</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+
+        <!-- Pop up for tell us more -->
+        <div class="popup" id="moreAboutUserPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closemoreAboutUserPopup();">&times;</span>
+                <h2>Write about your self</h2>
+                <form action="{{ url_for('myprofilepage', section='moreAboutUserDetails') }}" method="POST" >
+                    <textarea id="id_moreAboutuser" name="moreAboutUser" placeholder="Here..." cols="50" rows="10"></textarea>
+                    <div class="button-container">
+                        <button onclick="closemoreAboutUserPopup(); return false;" class="cancel">Cancel</button>
+                        <button type="submit" onclick="savemoreAboutUserDetails()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

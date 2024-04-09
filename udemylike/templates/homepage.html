@@ -24,6 +24,11 @@
                 // Redirect to coursesearchpage route
                 window.location.href = "{{ url_for('jobsearchpage') }}";
             }
+
+            function navigateTomyprofilepage() {
+                // Redirect to coursesearchpage route
+                window.location.href = "{{ url_for('myprofilepage', section='default') }}";
+            }
         </script>
     </head>
     <body>
@@ -42,7 +47,7 @@
                     <input name="keyword" placeholder="Search here" required>
                     <button type="submit">Search</button>
                 </form>
-                <button class="get-started">My Profile</button>
+                <button class="get-started" onclick="navigateTomyprofilepage()">My Profile</button>
             </div>
         </div>
 
