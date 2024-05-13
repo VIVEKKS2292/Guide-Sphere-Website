@@ -270,7 +270,7 @@ def get_personalized_course_recommendations(username):
 
 # Search Courses function
 def search_courses(keyword):
-    result_courses = courses[courses['course_title'].str.contains(keyword, case=False)]
+    result_courses = courses[courses['tags'].str.contains(keyword, case=False)]
 
     result_courses_list = []
     for idx, course in result_courses.iterrows():

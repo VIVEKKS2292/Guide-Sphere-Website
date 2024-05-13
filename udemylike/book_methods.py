@@ -101,7 +101,7 @@ def recommend_books(keyword):
 
 # Search Books function
 def search_books(keyword):
-    result_books = books[books['book_title'].str.contains(keyword, case=False)]
+    result_books = books[books['tags'].str.contains(keyword, case=False)]
 
     result_books_list = []
     for idx, book in result_books.iterrows():

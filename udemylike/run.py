@@ -21,6 +21,7 @@ from userdata_methods import insert_user_interests
 from userdata_methods import delete_user_interests
 from userdata_methods import insert_user_education
 from userdata_methods import delete_user_education
+from website_methods import recommend_websites
 
 # Define a blueprint for searchcourses model
 searchcourses_bp = Blueprint('searchcourses', __name__)
@@ -107,21 +108,26 @@ def coursedetailspage(title):
     course = getCourse(title)
     similar_courses = recommend_courses(title)
     similar_books = recommend_books(title)
+    similar_websites = recommend_websites(title)
     return render_template('coursedetailspage.html', course=course, similar_courses_list=similar_courses,
-                           similar_books_list=similar_books)
+                           similar_books_list=similar_books, similar_websites_list=similar_websites)
 
 @app.route('/bookdetailspage/<title>', methods=['GET'])
 def bookdetailspage(title):
     book = getBook(title)
     similar_books = recommend_books(title)
-    return render_template('bookdetailspage.html', book=book, similar_books_list=similar_books)
+    similar_websites = recommend_websites(title)
+    return render_template('bookdetailspage.html', book=book, similar_books_list=similar_books,
+                           similar_websites_list=similar_websites)
 
 @app.route('/jobdetailspage/<title>', methods=['GET'])
 def jobdetailspage(title):
     job = getJob(title)
     related_courses = recommend_courses(title)
     related_books = recommend_books(title)
-    return render_template('jobdetailspage.html', job=job, related_books_list=related_books, related_courses_list=related_courses)
+    similar_websites = recommend_websites(title)
+    return render_template('jobdetailspage.html', job=job, related_books_list=related_books, related_courses_list=related_courses,
+                           similar_websites_list=similar_websites)
 
 email = 'acd@gmail.com'
 UPLOAD_FOLDER = r'D:\Coding\Guide Sphere\udemylike\static\uploads'

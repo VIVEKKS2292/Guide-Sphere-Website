@@ -108,7 +108,7 @@ def recommend_jobs(keyword):
 
 # Search Jobs function
 def search_jobs(keyword):
-    result_jobs = jobs[jobs['job_title'].str.contains(keyword, case=False)]
+    result_jobs = jobs[jobs['tags'].str.contains(keyword, case=False)]
 
     result_jobs_list = []
     for idx, job in result_jobs.iterrows():

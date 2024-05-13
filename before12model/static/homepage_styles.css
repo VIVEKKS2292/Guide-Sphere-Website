@@ -1,0 +1,54 @@
+
+h1 {
+    margin-top: 50px; /* Add some top margin to the heading */
+    text-align: center;
+}
+
+button {
+    margin-top: 20px; /* Add some top margin to the button */
+    margin-left: auto; /* Set left margin to auto */
+    display: block; /* Ensure the button behaves as a block element */
+    margin-right: auto; /* Set right margin to auto */
+}
+
+.items-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    width: 90%; /* Set maximum width for the recommended courses */
+    margin: 20px auto; /* Center the container */
+}
+
+.items-list {
+    display: flex; /* Use flexbox to layout the recommended courses horizontally */
+    flex-wrap: nowrap; /* Prevent wrapping to the next line */
+}
+
+.item {
+    flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+    margin-right: 80px; /* Add some spacing between recommended courses */
+    width: 200px; /* Set width for each recommended course */
+}
+
+.item img {
+    width: 100%; /* Adjust image width as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.rec-job-postings-container{
+    text-align: center;
+}
+
+.rec-job-postings{
+    margin-left: 10%;
+}
+
+.rec-job-posts {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid black; /* Add black border */
+    padding: 10px 50px; /* Add left and right padding */
+    margin-bottom: 10px; /* Add margin to separate boxes */
+    max-width: 1400px; /* Set maximum width for the boxes */
+    align-items: center; /* Center contents vertically */
+    justify-content: space-between; /* Distribute contents evenly along the row */
+    border-radius: 15px; /* Add rounded corners */
+}

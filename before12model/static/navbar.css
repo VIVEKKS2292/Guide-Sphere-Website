@@ -1,0 +1,142 @@
+h1 {
+    margin-top: 50px; /* Add some top margin to the heading */
+    text-align: center;
+}
+
+button {
+    margin-top: 20px; /* Add some top margin to the button */
+    margin-left: auto; /* Set left margin to auto */
+    display: block; /* Ensure the button behaves as a block element */
+    margin-right: auto; /* Set right margin to auto */
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 10px 30px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow to the navbar */
+}
+
+.navbarsub1 {
+    display: flex;
+    align-items: center;
+}
+
+.navbarsub2 {
+    padding-top: 1%;    
+    position: relative;
+    /* top: -100%; */
+    left: 0;
+    width: 60%; /* Adjusted width */
+    box-sizing: border-box;
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /*Distribute items evenly along the container*/
+    align-items: center; /* Center items vertically */
+    margin: 0 20px;
+}
+
+.navbarsub2 a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    margin: 0 20px;
+}
+
+.navbarsub2 input {
+    /* margin-top: 1%; */
+    width: 300px;
+    padding: 10px;
+}
+
+.search-form{
+    display: flex;
+}
+
+.search-form button{
+    margin-left: 5px;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    margin-top: 0;
+    border: none;
+    cursor: pointer;
+}
+
+.get-started {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    margin-top: 0;
+    border: none;
+    cursor: pointer;
+}
+
+.home-button{    
+    display: inline-block;
+    padding: 10px 20px; /* Adjust padding as needed */
+    background-color: #ffffff; /* Button background color */
+    color: #fff; /* Button text color */
+    text-decoration: none; /* Remove default underline */
+    border: 1px solid #000; /* Add black border */
+    border-radius: 20px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.home-button:hover {
+    background-color: #ffe588; /* Darker background color on hover */
+    color: white;
+    border: 1px solid #ffffff
+}
+
+.switch-buttons {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #000; /* Add black border */
+    border-radius: 20px; /* Add rounded corners */
+    padding-top: 8px;
+    margin-right: 10px;
+}
+
+.switch-buttons a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    margin-bottom: 8px; /* Adjust spacing between buttons */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth color transition */
+}
+
+.switch-buttons a:hover {
+    background-color: #ffe588;
+    color: white;
+    border: 1px solid #ffffff
+}
+
+.active{
+    background-color: #dfdf18; 
+}
+
+.switch-buttons a:hover,
+.switch-buttons a.active {
+    background-color: #ffe588;
+    color: white;
+    border: 1px solid #ffffff;
+}
+
+

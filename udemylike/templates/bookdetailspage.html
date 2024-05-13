@@ -106,6 +106,22 @@
                 {% endfor %}
             </div>
         </div>
+
+        <!-- Similar Websites Section -->
+        <h2 style="padding-left: 5%; margin-top: 3%;">Similar Websites</h2>
+        <div class="items-container">
+            <div class="items-list">
+                {% for item in similar_websites_list %}
+                        <div class="item">
+                            <a href="{{ item['web_url'] }}" target="_blank">
+                                <img src="{{ item['web_img'] }}" alt="{{ item['web_title'] }}">
+                            </a>
+                            <h3>{{ item['web_title'] }}</h3>
+                            <p>Platform: {{ item['web_platform'] }}</p>
+                        </div> 
+                    {% endfor %}
+            </div>
+        </div>
     </body>
 </html>
 
