@@ -70,8 +70,8 @@ def insert_user_education(email, collegeName, specialization, grade):
     # Find user document by email and update education field
     collection.update_one({"email": email}, {"$push": {"education": education_det}})
 
-def delete_user_education(email, collegeName):
-     collection.update_one(
+def delete_user_education(email, selected_colleges):
+    collection.update_one(
         {"email": email},
-        {"$pull": {"education": {"collegeName": collegeName}}}
+        {"$pull": {"education": {"collegeName": {"$in": selected_colleges}}}}
     )

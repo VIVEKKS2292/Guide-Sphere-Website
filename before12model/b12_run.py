@@ -107,7 +107,7 @@ def b12_homepagesearchresults():
     return render_template('b12_homepagesearchresults.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5001, debug=True)
 
 
 

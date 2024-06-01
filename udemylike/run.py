@@ -1,3 +1,4 @@
+from flask import url_for, flash
 from flask import Flask, render_template, request, flash, redirect
 from werkzeug.utils import secure_filename
 import os
@@ -138,51 +139,62 @@ ALLOWED_EXTENSTIONS = set (['png','jpg','jpeg','gif'])
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSTIONS
 
+
 @app.route('/myprofilepage/<section>', methods=['GET', 'POST'])
 def myprofilepage(section):
-    if section == 'userPhotoDetails' and request.method == 'POST':
-        # Check if a file was uploaded
-        if 'userPhoto' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['userPhoto']
-        if file.filename == '':
-            flash('No image selected for uploading')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            insert_user_userPhoto(email, filename)
-            flash('successfully uploaded')
-        else:
-            flash('Allowed image types are - png, jpg, jpeg, gif')
-            return redirect(request.url)
+    if request.method == 'POST':
+        if section == 'userPhotoDetails':
+            # Handle user photo details
+            if 'userPhoto' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['userPhoto']
+            if file.filename == '':
+                flash('No image selected for uploading')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                insert_user_userPhoto(email, filename)
+                flash('Successfully uploaded')
+            else:
+                flash('Allowed image types are - png, jpg, jpeg, gif')
+                return redirect(request.url)
 
-    if section == 'basicDetails' and request.method == 'POST':
-        fullName = request.form.get('fullName')
-        insert_user_fullName(email, fullName)
+        elif section == 'basicDetails':
+            fullName = request.form.get('fullName')
+            insert_user_fullName(email, fullName)
+            flash('Basic details saved successfully!')
 
-    if section == 'interestsDetails' and request.method == 'POST':
-        interests = request.form.get('interests')
-        insert_user_interests(email, interests)
+        elif section == 'interestsDetails':
+            interests = request.form.get('interests')
+            insert_user_interests(email, interests)
+            flash('Interests saved successfully!')
 
-    if section == 'deleteinterestsDetails' and request.method == 'POST':
-        selected_interests = request.form.getlist('selected_interests[]')
-        delete_user_interests(email, selected_interests)
+        elif section == 'deleteinterestsDetails':
+            selected_interests = request.form.getlist('selected_interests[]')
+            delete_user_interests(email, selected_interests)
+            flash('Selected interests deleted successfully!')
 
-    if section == 'moreAboutUserDetails' and request.method == 'POST':
-        moreAboutUser = request.form.get('moreAboutUser')
-        insert_user_moreAboutUser(email, moreAboutUser)
-    
-    if section == 'educationDetails' and request.method == 'POST':
-        collegeName = request.form.get('collegeName')
-        specialization = request.form.get('specialization')
-        grade = request.form.get('grade')
-        insert_user_education(email, collegeName, specialization, grade)
-    
-    if section == 'deleteducationDetails' and request.method == 'POST':
-        selected_education = request.form.getlist('selected_education[]')
-        delete_user_education(email, selected_education)
+        elif section == 'moreAboutUserDetails':
+            moreAboutUser = request.form.get('moreAboutUser')
+            insert_user_moreAboutUser(email, moreAboutUser)
+            flash('More about user details saved successfully!')
+
+        elif section == 'educationDetails':
+            collegeName = request.form.get('collegeName')
+            specialization = request.form.get('specialization')
+            grade = request.form.get('grade')
+            insert_user_education(email, collegeName, specialization, grade)
+            flash('Education details saved successfully!')
+
+        elif section == 'deleteducationDetails':
+            selected_education = request.form.getlist('selected_education[]')
+            delete_user_education(email, selected_education)
+            flash('Selected education details deleted successfully!')
+
+        # Redirect to the same page using GET method
+        return redirect(url_for('myprofilepage', section=section))
 
     user = getuserdata(email)
     return render_template('myprofilepage.html', user=user)
